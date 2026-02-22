@@ -240,6 +240,6 @@ This project is licensed under the MIT License.
 
 - **Email**: hello@mkutano.app
 - **Phone**: +254 788191822
-- **Office**: iHub Nairobi, Kenya
+- **Office**: REMOTE BASED
 
 Built with ❤️ for women's savings groups across Africa.
