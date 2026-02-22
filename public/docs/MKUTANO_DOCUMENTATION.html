@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mkutano - Comprehensive Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: white;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+        }
+
+        /* Header Styles */
+        h1 {
+            color: #2d5016;
+            margin: 40px 0 10px;
+            padding: 20px 0 10px;
+            border-bottom: 3px solid #8b7355;
+            font-size: 2.5em;
+        }
+
+        h2 {
+            color: #2d5016;
+            margin: 30px 0 15px;
+            padding-top: 20px;
+            font-size: 1.8em;
+            border-left: 4px solid #8b7355;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #5a4a3a;
+            margin: 20px 0 10px;
+            font-size: 1.3em;
+        }
+
+        h4 {
+            color: #5a4a3a;
+            margin: 15px 0 8px;
+            font-size: 1.1em;
+        }
+
+        /* Metadata */
+        .metadata {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+        }
+
+        .metadata p {
+            margin: 5px 0;
+        }
+
+        /* Table of Contents */
+        .toc {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 30px 0;
+            page-break-after: avoid;
+        }
+
+        .toc ol {
+            margin-left: 20px;
+        }
+
+        .toc li {
+            margin: 8px 0;
+        }
+
+        .toc a {
+            color: #2d5016;
+            text-decoration: none;
+            border-bottom: 1px dotted #8b7355;
+        }
+
+        /* Code & Pre */
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 3px solid #8b7355;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.85em;
+            line-height: 1.4;
+        }
+
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #2d5016;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid #2d5016;
+        }
+
+        td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        tr:hover {
+            background: #f0f0f0;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin-left: 30px;
+            margin: 15px 0;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        /* Emphasis */
+        strong {
+            color: #2d5016;
+            font-weight: 600;
+        }
+
+        em {
+            color: #5a4a3a;
+            font-style: italic;
+        }
+
+        /* Blockquotes */
+        blockquote {
+            border-left: 4px solid #8b7355;
+            background: #f9f9f9;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 3px;
+        }
+
+        /* Cards/Boxes */
+        .feature-box {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            page-break-inside: avoid;
+        }
+
+        .feature-box h4 {
+            color: #2d5016;
+            margin-top: 0;
+        }
+
+        .checkmark {
+            color: #2d5016;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .xmark {
+            color: #d32f2f;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        /* Architecture Diagram */
+        .diagram {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+        }
+
+        /* Page Break */
+        .page-break {
+            page-break-after: always;
+            margin: 40px 0;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                padding: 0;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+
+            h1, h2 {
+                page-break-after: avoid;
+            }
+
+            h3, h4 {
+                page-break-after: avoid;
+            }
+
+            table {
+                page-break-inside: avoid;
+            }
+
+            .feature-box {
+                page-break-inside: avoid;
+            }
+
+            a {
+                color: #2d5016;
+                text-decoration: none;
+            }
+
+            pre {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Metadata Styling */
+        .doc-version {
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        /* Summary Boxes */
+        .summary {
+            background: #e8f5e9;
+            border: 1px solid #4caf50;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .summary h4 {
+            color: #2d5016;
+            margin-top: 0;
+        }
+
+        .important {
+            background: #fff3e0;
+            border: 1px solid #ff9800;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .important h4 {
+            color: #e65100;
+            margin-top: 0;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        /* Statistics Box */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-box {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .stat-number {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #2d5016;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Title Page -->
+        <div style="text-align: center; margin-bottom: 40px; padding: 40px 0;">
+            <h1 style="border-bottom: none; margin: 0; font-size: 3em;">Mkutano</h1>
+            <p style="font-size: 1.2em; color: #666; margin-top: 10px;">Comprehensive Application Documentation</p>
+            <p style="color: #999; margin-top: 30px; font-size: 0.95em;">
+                Village Savings & Loan Association Management System<br>
+                with Enterprise NGO/MFI Platform
+            </p>
+        </div>
+
+        <!-- Metadata -->
+        <div class="metadata">
+            <p><strong>Version:</strong> <span class="doc-version">0.1.0 (Beta)</span></p>
+            <p><strong>Last Updated:</strong> February 22, 2026</p>
+            <p><strong>Deployment:</strong> Vercel (Auto-deployed from GitHub)</p>
+            <p><strong>Repository:</strong> dig-software/MKUTANOAPP</p>
+            <p><strong>Production URL:</strong> mkutano-app.vercel.app</p>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- Table of Contents -->
+        <h2>Table of Contents</h2>
+        <div class="toc">
+            <ol>
+                <li><a href="#overview">Application Overview</a></li>
+                <li><a href="#features">Core Features</a></li>
+                <li><a href="#architecture">System Architecture</a></li>
+                <li><a href="#tech-stack">Technology Stack</a></li>
+                <li><a href="#roles">User Roles & Permissions</a></li>
+                <li><a href="#data-model">Data Model</a></li>
+                <li><a href="#structure">Application Structure</a></li>
+                <li><a href="#modules">Key Features by Module</a></li>
+                <li><a href="#enterprise">Enterprise Edition</a></li>
+                <li><a href="#auth">Authentication & Security</a></li>
+                <li><a href="#offline">Offline-First & PWA</a></li>
+                <li><a href="#getting-started">Getting Started</a></li>
+                <li><a href="#demo">Demo Accounts</a></li>
+                <li><a href="#deployment">Deployment & Versioning</a></li>
+            </ol>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- Section 1: Overview -->
+        <section class="section" id="overview">
+            <h2>Application Overview</h2>
+
+            <p><strong>Mkutano</strong> (meaning "gathering" or "meeting" in Swahili) is an offline-first, mobile-optimized web application designed for women's village savings and loan associations (VSLAs) across Africa.</p>
+
+            <h3>Core Mission</h3>
+            <p>Enable transparent financial management, accountability, and impact tracking for savings groups through a comprehensive yet intuitive platform that works offline, scales to 1000+ groups, and provides insights for NGO/MFI partners.</p>
+
+            <h3>Key Statistics</h3>
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-number">33</div>
+                    <div class="stat-label">Routes in Production</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">User Roles</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">8+</div>
+                    <div class="stat-label">Dashboard Modules</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Progressive Web App</div>
+                </div>
+            </div>
+
+            <h3>Primary Users</h3>
+            <ul>
+                <li><strong>Village Savings Secretaries</strong> - Manage group meetings and finances</li>
+                <li><strong>Group Members</strong> - View contributions, loans, and savings</li>
+                <li><strong>NGO Staff</strong> - Track loan impact across funded groups</li>
+                <li><strong>MFI Managers</strong> - Monitor lending portfolio performance</li>
+                <li><strong>System Administrators</strong> - Oversee multi-group operations</li>
+            </ul>
+        </section>
+
+        <!-- Section 2: Core Features -->
+        <section class="section" id="features">
+            <h2>Core Features</h2>
+
+            <h3>Public Marketing Site</h3>
+            <ul>
+                <li>Landing page with hero, features, how-it-works, testimonials</li>
+                <li>Marketing pages for all user types</li>
+                <li>News & press section</li>
+                <li>Contact form with email capture</li>
+                <li>Multi-step signup portal</li>
+                <li>FAQ section</li>
+                <li>Responsive mobile-first design</li>
+            </ul>
+
+            <h3>Community Dashboard (Savings Groups)</h3>
+            <ul>
+                <li>Meeting management (create, track, close sessions)</li>
+                <li>Member registry with wallet balances</li>
+                <li>Contribution tracking (contributions, social fund, fines)</li>
+                <li>Loan management with repayment schedules</li>
+                <li>Repayment recording with interest calculations</li>
+                <li>Member wallets with transaction history</li>
+                <li>Auto-generated PDF reports</li>
+                <li>Complete audit trail of all transactions</li>
+            </ul>
+
+            <h3>Enterprise Edition (NGO/MFI Platform)</h3>
+            <ul>
+                <li>NGO dashboard with program overview and budget tracking</li>
+                <li>MFI dashboard with lending portfolio KPIs</li>
+                <li>Impact tracking with repayment metrics</li>
+                <li>Loan portfolio view showing complete funding flow</li>
+                <li>Performance analytics and trend analysis</li>
+                <li>Quick navigation to funded groups</li>
+            </ul>
+
+            <h3>Offline-First Capabilities</h3>
+            <ul>
+                <li>Service worker caching</li>
+                <li>Sync status display</li>
+                <li>Built-in demo mode</li>
+                <li>Local storage fallback</li>
+                <li>Background sync when online</li>
+            </ul>
+        </section>
+
+        <div class="page-break"></div>
+
+        <!-- Section 3: Tech Stack -->
+        <section class="section" id="tech-stack">
+            <h2>Technology Stack</h2>
+
+            <h3>Frontend</h3>
+            <table>
+                <tr>
+                    <th>Technology</th>
+                    <th>Version</th>
+                    <th>Purpose</th>
+                </tr>
+                <tr>
+                    <td>Next.js</td>
+                    <td>14.2.20</td>
+                    <td>React framework with App Router</td>
+                </tr>
+                <tr>
+                    <td>React</td>
+                    <td>18</td>
+                    <td>UI library</td>
+                </tr>
+                <tr>
+                    <td>TypeScript</td>
+                    <td>5</td>
+                    <td>Type safety</td>
+                </tr>
+                <tr>
+                    <td>Tailwind CSS</td>
+                    <td>3.4.1</td>
+                    <td>Styling</td>
+                </tr>
+                <tr>
+                    <td>Lucide React</td>
+                    <td>0.441.0</td>
+                    <td>Icon library</td>
+                </tr>
+                <tr>
+                    <td>Recharts</td>
+                    <td>2.12.7</td>
+                    <td>Data visualization</td>
+                </tr>
+                <tr>
+                    <td>jsPDF</td>
+                    <td>2.5.1</td>
+                    <td>PDF generation</td>
+                </tr>
+            </table>
+
+            <h3>Backend & Database</h3>
+            <ul>
+                <li><strong>Backend-as-a-Service:</strong> Supabase (PostgreSQL 14+)</li>
+                <li><strong>Authentication:</strong> Supabase Auth (Phone + Email OTP)</li>
+                <li><strong>Database:</strong> 12 PostgreSQL tables with RLS policies</li>
+                <li><strong>Security:</strong> Row-Level Security (RLS) policies per user role</li>
+                <li><strong>Hosting:</strong> Vercel (auto-deploys from GitHub)</li>
+            </ul>
+
+            <h3>PWA & Offline</h3>
+            <ul>
+                <li>Custom Service Worker (public/sw.js)</li>
+                <li>Web Manifest (public/manifest.json)</li>
+                <li>Custom useOffline hook</li>
+                <li>Network-first and cache-first strategies</li>
+                <li>Background sync manager</li>
+            </ul>
+
+            <h3>Development Tools</h3>
+            <ul>
+                <li>npm for package management</li>
+                <li>ESLint for code linting</li>
+                <li>TypeScript for type checking</li>
+                <li>Git/GitHub for version control</li>
+                <li>Vercel for CI/CD</li>
+            </ul>
+        </section>
+
+        <!-- Section 4: User Roles -->
+        <section class="section" id="roles">
+            <h2>User Roles & Permissions</h2>
+
+            <h3>1. Secretary Role</h3>
+            <div class="feature-box">
+                <h4>Primary Responsibility</h4>
+                <p>Manage savings group meetings and member finances</p>
+
+                <h4>Permissions</h4>
+                <ul>
+                    <li><span class="checkmark">✓</span>Create and close meetings</li>
+                    <li><span class="checkmark">✓</span>Record contributions and loans</li>
+                    <li><span class="checkmark">✓</span>View all group members</li>
+                    <li><span class="checkmark">✓</span>Generate reports</li>
+                    <li><span class="xmark">✗</span>Cannot manage other groups</li>
+                </ul>
+
+                <h4>Demo Account</h4>
+                <code>Phone: +254700000001</code>
+            </div>
+
+            <h3>2. Member Role</h3>
+            <div class="feature-box">
+                <h4>Primary Responsibility</h4>
+                <p>Track personal savings and loans</p>
+
+                <h4>Permissions</h4>
+                <ul>
+                    <li><span class="checkmark">✓</span>View personal wallet</li>
+                    <li><span class="checkmark">✓</span>View personal contributions</li>
+                    <li><span class="checkmark">✓</span>View personal loans</li>
+                    <li><span class="xmark">✗</span>Cannot create meetings</li>
+                    <li><span class="xmark">✗</span>Cannot edit others' data</li>
+                </ul>
+
+                <h4>Demo Account</h4>
+                <code>Phone: +254700000003</code>
+            </div>
+
+            <h3>3. NGO Role</h3>
+            <div class="feature-box">
+                <h4>Primary Responsibility</h4>
+                <p>Track loan impact across funded groups</p>
+
+                <h4>Permissions</h4>
+                <ul>
+                    <li><span class="checkmark">✓</span>View all funded groups</li>
+                    <li><span class="checkmark">✓</span>Monitor repayment metrics</li>
+                    <li><span class="checkmark">✓</span>Access impact analytics</li>
+                    <li><span class="checkmark">✓</span>View loan portfolio</li>
+                    <li><span class="xmark">✗</span>Cannot modify group data</li>
+                </ul>
+
+                <h4>Demo Account</h4>
+                Click "Demo: Maendeleo Foundation" on <code>/enterprise/ngo-login</code>
+            </div>
+
+            <h3>4. MFI Role</h3>
+            <div class="feature-box">
+                <h4>Primary Responsibility</h4>
+                <p>Monitor lending portfolio and disbursement</p>
+
+                <h4>Permissions</h4>
+                <ul>
+                    <li><span class="checkmark">✓</span>View lending portfolio</li>
+                    <li><span class="checkmark">✓</span>Track disbursements and repayments</li>
+                    <li><span class="checkmark">✓</span>Monitor group performance</li>
+                    <li><span class="checkmark">✓</span>View repayment rates</li>
+                    <li><span class="xmark">✗</span>Cannot issue loans directly</li>
+                </ul>
+
+                <h4>Demo Account</h4>
+                Click "Demo: Ulinzi MFI for MSMEs" on <code>/enterprise/mfi-login</code>
+            </div>
+
+            <h3>5. Admin Role</h3>
+            <div class="feature-box">
+                <h4>Primary Responsibility</h4>
+                <p>System-wide administration and oversight</p>
+
+                <h4>Permissions</h4>
+                <ul>
+                    <li><span class="checkmark">✓</span>Manage all groups</li>
+                    <li><span class="checkmark">✓</span>Reset user passwords</li>
+                    <li><span class="checkmark">✓</span>View complete audit logs</li>
+                    <li><span class="checkmark">✓</span>System configuration</li>
+                    <li><span class="checkmark">✓</span>User role assignment</li>
+                </ul>
+            </div>
+        </section>
+
+        <div class="page-break"></div>
+
+        <!-- Section 5: Data Model (Summary) -->
+        <section class="section" id="data-model">
+            <h2>Data Model</h2>
+
+            <p>Mkutano uses a normalized PostgreSQL database with 12 core tables supporting complete financial tracking.</p>
+
+            <h3>Core Tables</h3>
+            <table>
+                <tr>
+                    <th>Table</th>
+                    <th>Purpose</th>
+                    <th>Key Fields</th>
+                </tr>
+                <tr>
+                    <td><strong>users</strong></td>
+                    <td>User accounts</td>
+                    <td>name, phone, email, role</td>
+                </tr>
+                <tr>
+                    <td><strong>groups</strong></td>
+                    <td>Savings groups</td>
+                    <td>name, village, secretary_id, member_count</td>
+                </tr>
+                <tr>
+                    <td><strong>members</strong></td>
+                    <td>Group members</td>
+                    <td>name, phone, total_saved, wallet_balance</td>
+                </tr>
+                <tr>
+                    <td><strong>meetings</strong></td>
+                    <td>Group meetings</td>
+                    <td>date, venue, status, attendance_count</td>
+                </tr>
+                <tr>
+                    <td><strong>contributions</strong></td>
+                    <td>Savings contributions</td>
+                    <td>amount, type, member_id, recorded_at</td>
+                </tr>
+                <tr>
+                    <td><strong>loans</strong></td>
+                    <td>Loans issued</td>
+                    <td>amount, interest_rate, status, due_date</td>
+                </tr>
+                <tr>
+                    <td><strong>repayments</strong></td>
+                    <td>Loan repayments</td>
+                    <td>principal, interest, loan_id, recorded_at</td>
+                </tr>
+                <tr>
+                    <td><strong>audit_logs</strong></td>
+                    <td>Transaction history</td>
+                    <td>action, entity, actor_id, timestamp</td>
+                </tr>
+                <tr>
+                    <td><strong>ngos</strong></td>
+                    <td>NGO organizations</td>
+                    <td>name, budget, programs</td>
+                </tr>
+                <tr>
+                    <td><strong>mfis</strong></td>
+                    <td>Microfinance institutions</td>
+                    <td>name, portfolio_size, active_groups</td>
+                </tr>
+            </table>
+
+            <h3>Data Relationships</h3>
+            <pre>users (1) ──── (many) members
+                           │
+                           └─ (1) groups
+                                  │
+                                  ├─ (many) meetings
+                                  ├─ (many) audit_logs
+                                  │
+                                  └─ (through MFI relationships)
+                                          ngos & mfis
+
+loans ────── (many) repayments
+contributions ────── (many) meetings</pre>
+
+            <h3>Security: Row-Level Security (RLS)</h3>
+            <p>All tables are protected by PostgreSQL RLS policies ensuring:</p>
+            <ul>
+                <li>Secretaries see only their group data</li>
+                <li>Members see only their personal data</li>
+                <li>NGO staff see only their funded groups</li>
+                <li>MFI managers see only their lending portfolio</li>
+                <li>Admins have full access</li>
+            </ul>
+        </section>
+
+        <!-- Section 6: Getting Started -->
+        <section class="section" id="getting-started">
+            <h2>Getting Started</h2>
+
+            <h3>Installation from Source</h3>
+
+            <h4>Prerequisites</h4>
+            <pre>Node.js 18+ required
+npm --version  # Should be v8 or higher</pre>
+
+            <h4>Clone & Install</h4>
+            <pre>git clone https://github.com/dig-software/MKUTANOAPP.git
+cd MKUTANO\ APP
+npm install</pre>
+
+            <h4>Environment Variables</h4>
+            <p>Create <code>.env.local</code>:</p>
+            <pre>NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here</pre>
+
+            <h4>Development Server</h4>
+            <pre>npm run dev
+# Open http://localhost:3000</pre>
+
+            <h4>Production Build</h4>
+            <pre>npm run build
+npm start</pre>
+
+            <h3>Deployment on Vercel</h3>
+            <ol>
+                <li>Push repository to GitHub</li>
+                <li>Visit vercel.com and create new project</li>
+                <li>Select MKUTANOAPP repository</li>
+                <li>Add environment variables</li>
+                <li>Click "Deploy"</li>
+                <li>Automatic deployments on main branch push</li>
+            </ol>
+
+            <div class="summary">
+                <h4>✓ Production URL</h4>
+                <p><strong>mkutano-app.vercel.app</strong> - Auto-deployed from GitHub main branch</p>
+            </div>
+        </section>
+
+        <div class="page-break"></div>
+
+        <!-- Section 7: Demo Accounts -->
+        <section class="section" id="demo">
+            <h2>Demo Accounts</h2>
+
+            <h3>Community Savings Group</h3>
+            <table>
+                <tr>
+                    <th>Role</th>
+                    <th>Phone Number</th>
+                    <th>Notes</th>
+                </tr>
+                <tr>
+                    <td>Secretary</td>
+                    <td><code>+254700000001</code></td>
+                    <td>Creates meetings, manages group</td>
+                </tr>
+                <tr>
+                    <td>Member</td>
+                    <td><code>+254700000003</code></td>
+                    <td>Views personal savings/loans</td>
+                </tr>
+            </table>
+
+            <h3>Enterprise Edition</h3>
+
+            <h4>NGO Portal</h4>
+            <p><strong>URL:</strong> <code>/enterprise/ngo-login</code></p>
+            <ul>
+                <li><strong>Demo Account:</strong> "Maendeleo Foundation"</li>
+                <li><strong>Program:</strong> Women Entrepreneurs Fund 2026</li>
+                <li><strong>Budget:</strong> 500,000 KES</li>
+                <li><strong>Features:</strong> Program overview, impact tracking, loan portfolio</li>
+            </ul>
+
+            <h4>MFI Portal</h4>
+            <p><strong>URL:</strong> <code>/enterprise/mfi-login</code></p>
+            <ul>
+                <li><strong>Demo Account:</strong> "Ulinzi MFI for MSMEs"</li>
+                <li><strong>Portfolio:</strong> 180,000 KES disbursed</li>
+                <li><strong>Repayment Rate:</strong> 92%</li>
+                <li><strong>Features:</strong> Lending portfolio, group performance, transaction history</li>
+            </ul>
+
+            <h3>Mock Data Included</h3>
+            <ul>
+                <li><strong>Community Group:</strong> "Maendeleo wa Wanawake" with 3 demo members</li>
+                <li><strong>NGO Program:</strong> $500K budget, 2 MFI partners</li>
+                <li><strong>MFI Portfolio:</strong> 3 active lending groups, realistic repayment data</li>
+                <li><strong>Sample Meetings:</strong> Multiple meeting sessions with transactions</li>
+            </ul>
+
+            <div class="important">
+                <h4>⚠ Note:</h4>
+                <p>Demo accounts require no password. Click "Demo Account" or "Demo: [Organization]" buttons to login instantly.</p>
+            </div>
+        </section>
+
+        <!-- Section 8: Offline Capabilities -->
+        <section class="section" id="offline">
+            <h2>Offline-First & Progressive Web App</h2>
+
+            <h3>Progressive Web App (PWA)</h3>
+
+            <h4>Installation</h4>
+            <ul>
+                <li><strong>Desktop (Chrome/Edge):</strong> Install button prompts when visiting site</li>
+                <li><strong>Mobile (iOS/Android):</strong> Add to home screen from share menu</li>
+                <li><strong>Standalone:</strong> App runs full-screen without browser chrome</li>
+                <li><strong>Native Feel:</strong> Instant load, smooth animations</li>
+            </ul>
+
+            <h4>Service Worker</h4>
+            <p>File: <code>public/sw.js</code></p>
+            <p><strong>Caching Strategies:</strong></p>
+            <ul>
+                <li>Network-first for pages (online priority)</li>
+                <li>Cache-first for assets (offline priority)</li>
+                <li>Stale-while-revalidate (serve cache, update background)</li>
+            </ul>
+
+            <h3>Offline Data Capture</h3>
+
+            <h4>How It Works</h4>
+            <ol>
+                <li>User creates meeting with contributions/loans</li>
+                <li>Data saved to <strong>localStorage</strong> immediately</li>
+                <li>Service worker intercepts network request</li>
+                <li>If online: sync to Supabase</li>
+                <li>If offline: queue for later</li>
+                <li>Sync status indicator shows "Offline" or "Synced"</li>
+            </ol>
+
+            <h4>Local Storage Structure</h4>
+            <pre>{
+  "mkutano_pendingChanges": [
+    {
+      "type": "contribution",
+      "meetingId": "...",
+      "groupId": "...",
+      "amount": 500,
+      "memberId": "...",
+      "timestamp": "2026-02-22T10:30:00Z"
+    }
+  ],
+  "mkutano_user": {
+    "id": "...",
+    "phone": "+254...",
+    "role": "secretary",
+    "groupId": "..."
+  }
+}</pre>
+
+            <h3>Demo Mode</h3>
+            <p>Works 100% offline with no authentication:</p>
+            <ul>
+                <li>Built-in demo data</li>
+                <li>Pre-configured demo accounts</li>
+                <li>Realistic sample data for testing</li>
+                <li>Complete offline functionality</li>
+            </ul>
+
+            <div class="summary">
+                <h4>✓ Works Anywhere</h4>
+                <p>Create savings groups, record meetings, and manage finances even without internet. Data automatically syncs when connection restored.</p>
+            </div>
+        </section>
+
+        <div class="page-break"></div>
+
+        <!-- Section 9: Enterprise Edition -->
+        <section class="section" id="enterprise">
+            <h2>Enterprise Edition</h2>
+
+            <p>Dedicated platform for NGOs and Microfinance Institutions to track loan impact, monitor repayment performance, and manage funding allocations.</p>
+
+            <h3>NGO Portal</h3>
+
+            <h4>Dashboard Home (<code>/dashboard/ngo</code>)</h4>
+            <ul>
+                <li><strong>Program Overview:</strong> Name, budget, allocation progress</li>
+                <li><strong>Funding Allocation:</strong> Shows MFI partners and amounts</li>
+                <li><strong>Impact Metrics:</strong> Active borrowers, repayment rate, outstanding balance</li>
+                <li><strong>Quick Navigation:</strong> Links to Groups, Impact, Loans pages</li>
+            </ul>
+
+            <h4>Funded Groups (<code>/dashboard/ngo/groups</code>)</h4>
+            <ul>
+                <li>Overview cards for each group</li>
+                <li>Member count, loans issued, repayment %</li>
+                <li>Health status (Healthy/Moderate/At Risk)</li>
+                <li>Sortable by name, location, repayment rate</li>
+            </ul>
+
+            <h4>Impact Analytics (<code>/dashboard/ngo/impact</code>)</h4>
+            <ul>
+                <li>6-month repayment trend visualization</li>
+                <li>Loan status breakdown (Repaid/On Schedule/Overdue)</li>
+                <li>Group performance comparison</li>
+                <li>Key insights and recommendations</li>
+            </ul>
+
+            <h3>MFI Portal</h3>
+
+            <h4>Dashboard Home (<code>/dashboard/mfi</code>)</h4>
+            <ul>
+                <li><strong>Lending Portfolio KPIs:</strong> Disbursed, Repaid, Outstanding, Rate</li>
+                <li><strong>Active Lending Groups:</strong> Table with funding amounts and performance</li>
+                <li><strong>Group Performance:</strong> Repayment rates, status indicators</li>
+                <li><strong>Quick Stats:</strong> Groups active, borrowers, average loan size</li>
+            </ul>
+
+            <h3>Enterprise Landing Page (<code>/enterprise</code>)</h3>
+            <ul>
+                <li>Platform overview for NGO and MFI solutions</li>
+                <li>Feature comparison</li>
+                <li>Funding flow diagram (NGO → MFI → Groups → Impact)</li>
+                <li>Quick navigation to login pages</li>
+            </ul>
+
+            <h3>Key Metrics Tracked</h3>
+            <table>
+                <tr>
+                    <th>Metric</th>
+                    <th>NGO Perspective</th>
+                    <th>MFI Perspective</th>
+                </tr>
+                <tr>
+                    <td>Program Budget</td>
+                    <td>✓ Total budget</td>
+                    <td>─ Portfolio size</td>
+                </tr>
+                <tr>
+                    <td>Funding Allocation</td>
+                    <td>✓ By MFI partner</td>
+                    <td>─ Received from NGO</td>
+                </tr>
+                <tr>
+                    <td>Repayment Rate</td>
+                    <td>✓ Overall impact</td>
+                    <td>✓ Portfolio performance</td>
+                </tr>
+                <tr>
+                    <td>Outstanding Balance</td>
+                    <td>✓ By MFI</td>
+                    <td>✓ Total portfolio</td>
+                </tr>
+                <tr>
+                    <td>Active Borrowers</td>
+                    <td>✓ Across groups</td>
+                    <td>✓ Across portfolio</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Section 10: Security -->
+        <section class="section" id="auth">
+            <h2>Authentication & Security</h2>
+
+            <h3>Authentication Methods</h3>
+
+            <h4>Phone-Based (Primary)</h4>
+            <ul>
+                <li>Supabase Auth with Phone OTP</li>
+                <li>No password required</li>
+                <li>SMS delivery of verification code</li>
+                <li>Fast signup process</li>
+            </ul>
+
+            <h4>Email-Based (Alternative)</h4>
+            <ul>
+                <li>Email OTP or password authentication</li>
+                <li>Account recovery mechanism</li>
+                <li>Professional for desktop users</li>
+            </ul>
+
+            <h4>Demo Mode</h4>
+            <ul>
+                <li>No authentication required</li>
+                <li>Pre-configured demo accounts</li>
+                <li>Works 100% offline</li>
+                <li>Data isolated from production</li>
+            </ul>
+
+            <h3>Security Features</h3>
+
+            <h4>Row-Level Security (RLS)</h4>
+            <ul>
+                <li><strong>Database-Level:</strong> PostgreSQL RLS policies</li>
+                <li><strong>User Isolation:</strong> Each user sees only their data</li>
+                <li><strong>Role-Based:</strong> Different views per role</li>
+                <li><strong>Audit Logging:</strong> All access logged</li>
+            </ul>
+
+            <h4>Session Management</h4>
+            <ul>
+                <li><strong>JWT Tokens:</strong> Secure token-based sessions</li>
+                <li><strong>Auto-Logout:</strong> Inactive session timeout</li>
+                <li><strong>Device Management:</strong> Sessions per device</li>
+                <li><strong>Explicit Logout:</strong> Clear all sessions on logout</li>
+            </ul>
+
+            <h4>Data Protection</h4>
+            <ul>
+                <li><strong>In Transit:</strong> HTTPS/SSL for all connections</li>
+                <li><strong>At Rest:</strong> Supabase encryption for stored data</li>
+                <li><strong>PII Fields:</strong> Additional encryption layer</li>
+                <li><strong>Audit Trail:</strong> Complete logging of changes</li>
+            </ul>
+
+            <h3>Audit Trail</h3>
+            <p>Every action in the system is logged with:</p>
+            <ul>
+                <li>Actor identification (who made the change)</li>
+                <li>Action type (create, update, delete)</li>
+                <li>Entity type and ID (what was changed)</li>
+                <li>Timestamp (when, precise to milliseconds)</li>
+                <li>Full details (specific values changed)</li>
+                <li>IP address (optional, if tracked)</li>
+            </ul>
+
+            <div class="summary">
+                <h4>✓ Bank-Grade Security</h4>
+                <p>Mkutano uses enterprise-level security practices with database-level access control, complete audit trails, and secure authentication.</p>
+            </div>
+        </section>
+
+        <!-- Section 11: Support -->
+        <section class="section" id="deployment">
+            <h2>Deployment & Versioning</h2>
+
+            <h3>Current Version</h3>
+            <ul>
+                <li><strong>Version:</strong> 0.1.0</li>
+                <li><strong>Status:</strong> Beta (Production Ready)</li>
+                <li><strong>Release Date:</strong> February 22, 2026</li>
+            </ul>
+
+            <h3>Deployment Environments</h3>
+            <table>
+                <tr>
+                    <th>Environment</th>
+                    <th>URL</th>
+                    <th>Deployment</th>
+                </tr>
+                <tr>
+                    <td>Production</td>
+                    <td>mkutano-app.vercel.app</td>
+                    <td>Auto-deployed from main branch</td>
+                </tr>
+                <tr>
+                    <td>Development</td>
+                    <td>localhost:3000</td>
+                    <td>Local development server</td>
+                </tr>
+            </table>
+
+            <h3>Build Output</h3>
+            <ul>
+                <li><strong>Total Routes:</strong> 33 in production</li>
+                <li><strong>Public Pages:</strong> 6 (landing, benefits, contact, faqs, news, login, signup)</li>
+                <li><strong>Dashboard Pages:</strong> 20+ (secretary/member/ngo/admin views)</li>
+                <li><strong>Enterprise Pages:</strong> 3 (landing, ngo-login, mfi-login)</li>
+                <li><strong>Bundle Size:</strong> 87.3 kB shared + route-specific 4-150 kB</li>
+            </ul>
+
+            <h3>Browser Support</h3>
+            <table>
+                <tr>
+                    <th>Browser</th>
+                    <th>Support</th>
+                </tr>
+                <tr>
+                    <td>Chrome/Chromium</td>
+                    <td>✅ Full support</td>
+                </tr>
+                <tr>
+                    <td>Firefox</td>
+                    <td>✅ Full support</td>
+                </tr>
+                <tr>
+                    <td>Safari (iOS 13+)</td>
+                    <td>✅ Full support</td>
+                </tr>
+                <tr>
+                    <td>Edge</td>
+                    <td>✅ Full support</td>
+                </tr>
+            </table>
+
+            <h3>Recent Changes</h3>
+
+            <h4>Latest Commit: 4f232a0 (Feb 22, 2026)</h4>
+            <ul>
+                <li>Added <code>/dashboard/ngo</code> root page with program overview</li>
+                <li>Added <code>/dashboard/mfi</code> root page with lending portfolio KPIs</li>
+                <li>Fixed 404 errors for enterprise login flows</li>
+                <li>Integrated NGO and MFI mock data</li>
+            </ul>
+
+            <h4>Previous Notable Commits</h4>
+            <ul>
+                <li><strong>6aa0d8b:</strong> Enterprise Edition foundation (login pages, navigation)</li>
+                <li><strong>ee203e9:</strong> Fixed logout session management</li>
+                <li><strong>790adc8:</strong> Removed shares concept across entire app</li>
+            </ul>
+        </section>
+
+        <!-- Conclusion -->
+        <section class="section">
+            <h2>Summary</h2>
+
+            <p><strong>Mkutano</strong> is a comprehensive platform for managing village savings and loan associations with strong offline-first capabilities, enterprise-grade security, and an intuitive interface. The system supports both community groups (VSLA) and enterprise partners (NGO/MFI) through role-based access control and specialized dashboards.</p>
+
+            <h3>Key Strengths</h3>
+            <div class="summary">
+                <ul>
+                    <li><span class="checkmark">✓</span> <strong>Offline-first architecture</strong> - Works anywhere, anytime</li>
+                    <li><span class="checkmark">✓</span> <strong>PWA installable</strong> - Mobile & desktop app-like experience</li>
+                    <li><span class="checkmark">✓</span> <strong>Complete audit trail</strong> - Full accountability</li>
+                    <li><span class="checkmark">✓</span> <strong>Multi-platform</strong> - Community + Enterprise support</li>
+                    <li><span class="checkmark">✓</span> <strong>Auto-deployment</strong> - Continuous integration from GitHub</li>
+                    <li><span class="checkmark">✓</span> <strong>Progressive enhancement</strong> - Works in any modern browser</li>
+                    <li><span class="checkmark">✓</span> <strong>Responsive design</strong> - Mobile, tablet, desktop</li>
+                    <li><span class="checkmark">✓</span> <strong>Demo-ready</strong> - Test without signup</li>
+                </ul>
+            </div>
+
+            <h3>Getting Started Today</h3>
+            <p><strong>Visit:</strong> <code>https://mkutano-app.vercel.app</code></p>
+            <p><strong>Login with demo credentials:</strong></p>
+            <ul>
+                <li>Phone: <code>+254700000001</code> (Community Secretary)</li>
+                <li>Or Enterprise portals: <code>/enterprise/ngo-login</code> or <code>/enterprise/mfi-login</code></li>
+            </ul>
+
+            <h3>For More Information</h3>
+            <p>See specific documentation files in the project root:</p>
+            <ul>
+                <li>README.md - Quick start guide</li>
+                <li>DATABASE_SCHEMA.md - Complete database design</li>
+                <li>PWA_SETUP.md - Progressive web app details</li>
+                <li>NGO_PORTAL_DOCUMENTATION.md - Enterprise features</li>
+            </ul>
+
+            <div style="text-align: center; margin-top: 60px; padding-top: 30px; border-top: 2px solid #ddd;">
+                <p style="color: #666; font-size: 0.9em;">
+                    © 2026 Dig Software. Mkutano — Empowering Village Savings Communities.
+                </p>
+                <p style="color: #999; font-size: 0.85em; margin-top: 10px;">
+                    For technical support, visit github.com/dig-software/MKUTANOAPP
+                </p>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

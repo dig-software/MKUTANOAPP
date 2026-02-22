@@ -39,7 +39,7 @@ export default function DocsPage() {
               Complete 50+ page guide covering architecture, features, user roles, data model, deployment, and troubleshooting. Optimized for printing to PDF.
             </p>
             <a
-              href="/MKUTANO_DOCUMENTATION.html"
+              href="/docs/MKUTANO_DOCUMENTATION.html"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-4 py-2 bg-forest-600 text-white rounded-lg hover:bg-forest-700 transition-colors"
@@ -66,7 +66,7 @@ export default function DocsPage() {
               Same comprehensive documentation in Markdown format. Best for version control, editing, and converting to other formats like PDF or EPUB.
             </p>
             <a
-              href="/COMPREHENSIVE_DOCUMENTATION.md"
+              href="/docs/COMPREHENSIVE_DOCUMENTATION.md"
               className="inline-flex items-center gap-2 px-4 py-2 bg-forest-600 text-white rounded-lg hover:bg-forest-700 transition-colors"
             >
               <span>Download MD</span>
@@ -160,7 +160,7 @@ export default function DocsPage() {
               <span className="font-bold text-forest-900 flex-shrink-0">1.</span>
               <span>
                 <strong>Open HTML documentation:</strong> Click &quot;View HTML&quot; above or visit{' '}
-                <code className="bg-white px-2 py-1 rounded border border-forest-200">/MKUTANO_DOCUMENTATION.html</code>
+                <code className="bg-white px-2 py-1 rounded border border-forest-200">/docs/MKUTANO_DOCUMENTATION.html</code>
               </span>
             </li>
             <li className="flex gap-4">
@@ -235,7 +235,7 @@ export default function DocsPage() {
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <a
-              href="/MKUTANO_DOCUMENTATION.html"
+              href="/docs/MKUTANO_DOCUMENTATION.html"
               target="_blank"
               rel="noopener noreferrer"
               className="px-6 py-3 bg-forest-500 hover:bg-forest-600 rounded-lg font-semibold transition-colors inline-flex items-center gap-2"
