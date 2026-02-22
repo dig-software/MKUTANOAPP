@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/Badge";
 import { mockNotifications } from "@/lib/mockData";
 import { getInitials } from "@/lib/utils";
 import { useCurrentUser } from "@/lib/UserContext";
+import { supabase } from "@/lib/supabase";
 
 const navSections = {
   secretary: [
@@ -67,8 +68,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   const navItems = navSections[currentUser.role as keyof typeof navSections] || navSections.secretary;
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     localStorage.removeItem("currentUser");
+    await supabase.auth.signOut();
     router.push("/login");
   };
 

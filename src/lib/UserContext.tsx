@@ -61,18 +61,11 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
           
           if (profile) {
             setCurrentUser(profile as User);
+            localStorage.setItem('currentUser', JSON.stringify(profile));
           }
-        } else if (typeof window !== 'undefined') {
-          const storedUser = localStorage.getItem('currentUser');
-          if (storedUser) {
-            try {
-              setCurrentUser(JSON.parse(storedUser) as User);
-              return;
-            } catch (parseError) {
-              console.error('Failed to parse stored user', parseError);
-              localStorage.removeItem('currentUser');
-            }
-          }
+        } else {
+          // Session ended, clear everything
+          localStorage.removeItem('currentUser');
           setCurrentUser(null);
         }
       }
