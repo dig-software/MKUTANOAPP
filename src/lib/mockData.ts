@@ -75,12 +75,15 @@ export const mockGroup: Group = {
   district: "Westlands",
   country: "Kenya",
   secretaryId: "u1",
+  secretaryName: "Grace Wanjiku",
+  secretaryPhone: "+254712345678",
   memberCount: 18,
   createdAt: "2024-01-15",
   cycleStartDate: "2025-01-01",
   cycleEndDate: "2025-12-31",
   shareValue: 100,
   currency: "KES",
+  joinCode: "MAE-X9K2",
   isActive: true,
 };
 
@@ -121,9 +124,9 @@ export const mockLoans: Loan[] = [
 ];
 
 export const mockRepayments: Repayment[] = [
-  { id: "r1", loanId: "l1", meetingId: "mt2", memberId: "m1", memberName: "Mary Achieng", principal: 1500, interest: 250, total: 1750, recordedAt: "2026-03-01T11:00:00", recordedBy: "u1" },
-  { id: "r2", loanId: "l2", meetingId: "mt2", memberId: "m3", memberName: "Alice Njeri", principal: 2000, interest: 400, total: 2400, recordedAt: "2026-03-01T11:05:00", recordedBy: "u1" },
-  { id: "r3", loanId: "l5", meetingId: "mt2", memberId: "m2", memberName: "Fatuma Hassan", principal: 3000, interest: 300, total: 3300, recordedAt: "2026-03-01T11:10:00", recordedBy: "u1" },
+  { id: "r1", loanId: "l1", meetingId: "mt2", groupId: "g1", memberId: "m1", memberName: "Mary Achieng", principal: 1500, interest: 250, total: 1750, recordedAt: "2026-03-01T11:00:00", recordedBy: "u1" },
+  { id: "r2", loanId: "l2", meetingId: "mt2", groupId: "g1", memberId: "m3", memberName: "Alice Njeri", principal: 2000, interest: 400, total: 2400, recordedAt: "2026-03-01T11:05:00", recordedBy: "u1" },
+  { id: "r3", loanId: "l5", meetingId: "mt2", groupId: "g1", memberId: "m2", memberName: "Fatuma Hassan", principal: 3000, interest: 300, total: 3300, recordedAt: "2026-03-01T11:10:00", recordedBy: "u1" },
 ];
 
 export const mockAuditLogs: AuditLog[] = [

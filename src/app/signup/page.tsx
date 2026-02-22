@@ -274,8 +274,9 @@ export default function SignupPage() {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="label">Currency</label>
+                      <label htmlFor="currency-select" className="label">Currency</label>
                       <select
+                        id="currency-select"
                         className="input-field"
                         value={form.currency}
                         onChange={(e) =>
@@ -318,7 +319,7 @@ export default function SignupPage() {
                 Confirm & create your account
               </h2>
               <div className="space-y-2 bg-sand-50 rounded-xl p-4 mb-6 text-sm">
-                {[
+                {([
                   ["Role", form.role],
                   ["Name", form.name || "—"],
                   ["Phone", form.phone || "—"],
@@ -331,7 +332,7 @@ export default function SignupPage() {
                   ],
                   form.nationalId &&
                     form.role === "member" && ["National ID", form.nationalId],
-                ]
+                ] as Array<[string, string] | false>)
                   .filter((item) => item !== false)
                   .map(([k, v]) => (
                     <div key={k} className="flex justify-between">

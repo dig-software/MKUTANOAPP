@@ -302,7 +302,7 @@ export function updateMemberStatus(
     const users = getAllUsers();
     const user = users.find((u) => u.id === member.userId);
     if (user) {
-      user.isActive = status === "active";
+      user.isActive = false;
       localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
     }
   }

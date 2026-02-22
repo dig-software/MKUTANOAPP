@@ -88,7 +88,7 @@ export default function ReportsPage() {
       <div className="card bg-earth-50 border-earth-200">
         <h3 className="text-sm font-semibold text-earth-800 mb-2">📤 Export Group Data</h3>
         <p className="text-sm text-earth-700 mb-4">
-          Download all your group's data (members, meetings, contributions, loans) in CSV or Excel format for external analysis.
+          Download all your group&apos;s data (members, meetings, contributions, loans) in CSV or Excel format for external analysis.
         </p>
         <div className="flex gap-3">
           <Button variant="outline" size="sm">Export as CSV</Button>

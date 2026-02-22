@@ -10,7 +10,7 @@ const benefitSections = [
     tag: "For Secretaries",
     tagColor: "badge-green",
     heading: "Run your meetings like a pro",
-    subtext: "Mkutano was designed first and foremost for the group secretary — the hardest-working volunteer in every savings group.",
+    subtext: "Mkutano was designed first and foremost for the group secretary &mdash; the hardest-working volunteer in every savings group.",
     color: "bg-forest-50",
     accentColor: "text-forest-700",
     borderColor: "border-forest-200",

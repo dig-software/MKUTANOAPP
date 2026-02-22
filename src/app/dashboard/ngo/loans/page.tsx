@@ -221,7 +221,7 @@ export default function NGOLoansPage() {
             <div>
               <h3 className="font-semibold text-terra-900">Overdue Loans Alert</h3>
               <p className="text-sm text-terra-800 mt-1">
-                {loans.filter((l) => l.status === "overdue").length} loan(s) are overdue. Esther Kipchoge's KES 4,000 outstanding balance is overdue. Please follow up.
+                {loans.filter((l) => l.status === "overdue").length} loan(s) are overdue. Esther Kipchoge&apos;s KES 4,000 outstanding balance is overdue. Please follow up.
               </p>
             </div>
           </div>

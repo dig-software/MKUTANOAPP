@@ -105,6 +105,7 @@ export interface Repayment {
   id: string;
   loanId: string;
   meetingId: string;
+  groupId: string;
   memberId: string;
   memberName: string;
   principal: number;

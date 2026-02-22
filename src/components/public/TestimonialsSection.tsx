@@ -63,7 +63,7 @@ export default function TestimonialsSection() {
           <span className="badge-green mb-3 inline-flex">Real Stories</span>
           <h2 className="section-title">Trusted by groups across Africa</h2>
           <p className="section-subtitle mx-auto text-center">
-            From rural village halls to NGO program offices — here's what real users say.
+            From rural village halls to NGO program offices &mdash; here&apos;s what real users say.
           </p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -72,7 +72,7 @@ export default function TestimonialsSection() {
               <div className="flex text-earth-400 gap-0.5 mb-4 text-lg">
                 {"★".repeat(t.stars)}
               </div>
-              <p className="text-sm text-gray-700 leading-relaxed flex-1 italic">"{t.quote}"</p>
+              <p className="text-sm text-gray-700 leading-relaxed flex-1 italic">&quot;{t.quote}&quot;</p>
               <div className="flex items-center gap-3 mt-5 pt-4 border-t border-sand-100">
                 <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm ${t.color}`}>
                   {t.initials}

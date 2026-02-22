@@ -17,11 +17,11 @@ export default function HeroSection() {
               Offline-First · Made for VSLAs
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold text-gray-900 leading-tight">
-              Your group's money,{" "}
+              Your group&apos;s money,{" "}
               <span className="text-gradient">managed with confidence</span>
             </h1>
             <p className="mt-6 text-lg sm:text-xl text-gray-600 leading-relaxed">
-              Mkutano digitizes every savings meeting — contributions, loans, repayments, and reports — even without internet. Built for women's village savings groups across Africa.
+              Mkutano digitizes every savings meeting — contributions, loans, repayments, and reports — even without internet. Built for women&apos;s village savings groups across Africa.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-4">
               <Link href="/signup" className="btn-primary text-base !px-7 !py-4">

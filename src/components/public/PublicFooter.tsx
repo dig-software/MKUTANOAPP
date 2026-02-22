@@ -36,7 +36,7 @@ export default function PublicFooter() {
               <span className="text-xl font-display font-bold">Mkutano</span>
             </div>
             <p className="text-forest-200 text-sm leading-relaxed max-w-xs">
-              An offline-first savings group management system built for women's
+              An offline-first savings group management system built for women&apos;s
               village savings and loan associations across Africa.
             </p>
             <div className="mt-6 space-y-2">

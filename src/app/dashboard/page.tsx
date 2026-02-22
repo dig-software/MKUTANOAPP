@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = "force-dynamic";
 import { StatCard } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { mockStats, mockChartData, mockMeetings, mockMembers, mockLoans, mockContributions } from "@/lib/mockData";

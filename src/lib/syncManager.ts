@@ -26,6 +26,15 @@ interface OfflineData {
   [key: string]: any[]
 }
 
+function createEmptyOfflineData(): OfflineData {
+  return {
+    contributions: [],
+    loans: [],
+    repayments: [],
+    meetings: [],
+  }
+}
+
 /**
  * Save offline operation to localStorage
  */
@@ -37,7 +46,7 @@ export function saveOfflineData(
 ) {
   try {
     const stored = localStorage.getItem(OFFLINE_STORAGE_KEY)
-    const offlineData: OfflineData = stored ? JSON.parse(stored) : {}
+    const offlineData: OfflineData = stored ? JSON.parse(stored) : createEmptyOfflineData()
 
     // Initialize array if needed
     if (!offlineData[dataType]) {
@@ -73,12 +82,12 @@ export function saveOfflineData(
 export function getOfflineData(userId: string): OfflineData {
   try {
     const stored = localStorage.getItem(OFFLINE_STORAGE_KEY)
-    if (!stored) return {}
+    if (!stored) return createEmptyOfflineData()
 
-    const allData = JSON.parse(stored)
+    const allData = { ...createEmptyOfflineData(), ...JSON.parse(stored) }
 
     // Filter by userId
-    const userOfflineData: OfflineData = {}
+    const userOfflineData: OfflineData = createEmptyOfflineData()
     Object.keys(allData).forEach((key) => {
       userOfflineData[key] = allData[key].filter(
         (item: any) => item._userId === userId && !item._synced
@@ -88,7 +97,7 @@ export function getOfflineData(userId: string): OfflineData {
     return userOfflineData
   } catch (error) {
     console.error('Failed to read offline data:', error)
-    return {}
+    return createEmptyOfflineData()
   }
 }
 

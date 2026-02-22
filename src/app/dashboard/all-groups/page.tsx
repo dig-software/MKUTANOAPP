@@ -177,13 +177,13 @@ export default function AllGroupsPage() {
 
               {/* Actions */}
               <div className="flex flex-col gap-2 shrink-0">
-                <button className="p-2 hover:bg-gray-100 rounded-lg">
+                <button aria-label={`View group ${group.name}`} className="p-2 hover:bg-gray-100 rounded-lg">
                   <Eye className="w-4 h-4 text-gray-600" />
                 </button>
-                <button className="p-2 hover:bg-gray-100 rounded-lg">
+                <button aria-label={`Edit group ${group.name}`} className="p-2 hover:bg-gray-100 rounded-lg">
                   <Edit className="w-4 h-4 text-gray-600" />
                 </button>
-                <button className="p-2 hover:bg-terra-100 rounded-lg">
+                <button aria-label={`Delete group ${group.name}`} className="p-2 hover:bg-terra-100 rounded-lg">
                   <Trash2 className="w-4 h-4 text-terra-600" />
                 </button>
               </div>

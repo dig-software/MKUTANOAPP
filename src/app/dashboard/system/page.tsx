@@ -98,8 +98,9 @@ export default function SystemSettingsPage() {
         <div className="space-y-4">
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Max Group Size</label>
+              <label htmlFor="maxGroupSize" className="block text-sm font-semibold text-gray-700 mb-2">Max Group Size</label>
               <input
+                id="maxGroupSize"
                 type="number"
                 value={settings.maxGroupSize}
                 onChange={(e) => setSettings({ ...settings, maxGroupSize: parseInt(e.target.value) })}
@@ -108,8 +109,9 @@ export default function SystemSettingsPage() {
               <p className="text-xs text-gray-500 mt-1">Maximum members allowed per group</p>
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Min Group Size</label>
+              <label htmlFor="minGroupSize" className="block text-sm font-semibold text-gray-700 mb-2">Min Group Size</label>
               <input
+                id="minGroupSize"
                 type="number"
                 value={settings.minGroupSize}
                 onChange={(e) => setSettings({ ...settings, minGroupSize: parseInt(e.target.value) })}
@@ -130,8 +132,9 @@ export default function SystemSettingsPage() {
         <div className="space-y-4">
           <div className="grid sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Default Interest Rate (%)</label>
+              <label htmlFor="interestRate" className="block text-sm font-semibold text-gray-700 mb-2">Default Interest Rate (%)</label>
               <input
+                id="interestRate"
                 type="number"
                 step="0.5"
                 value={settings.defaultLoanInterestRate}
@@ -141,8 +144,9 @@ export default function SystemSettingsPage() {
               <p className="text-xs text-gray-500 mt-1">Default interest rate for new loans</p>
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Max Loan Amount (KES)</label>
+              <label htmlFor="maxLoanAmount" className="block text-sm font-semibold text-gray-700 mb-2">Max Loan Amount (KES)</label>
               <input
+                id="maxLoanAmount"
                 type="number"
                 value={settings.maxLoanAmount}
                 onChange={(e) => setSettings({ ...settings, maxLoanAmount: parseInt(e.target.value) })}
@@ -151,8 +155,9 @@ export default function SystemSettingsPage() {
               <p className="text-xs text-gray-500 mt-1">Maximum loan size</p>
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Min Loan Amount (KES)</label>
+              <label htmlFor="minLoanAmount" className="block text-sm font-semibold text-gray-700 mb-2">Min Loan Amount (KES)</label>
               <input
+                id="minLoanAmount"
                 type="number"
                 value={settings.minLoanAmount}
                 onChange={(e) => setSettings({ ...settings, minLoanAmount: parseInt(e.target.value) })}
@@ -173,8 +178,9 @@ export default function SystemSettingsPage() {
         <div className="space-y-4">
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Backup Frequency</label>
+              <label htmlFor="backupFreq" className="block text-sm font-semibold text-gray-700 mb-2">Backup Frequency</label>
               <select
+                id="backupFreq"
                 value={settings.backupFrequency}
                 onChange={(e) => setSettings({ ...settings, backupFrequency: e.target.value })}
                 className="input-field"

@@ -220,7 +220,7 @@ export async function issueLoan(loan: Omit<Loan, 'id' | 'createdAt' | 'updatedAt
     meetingId: loan.meetingId,
     transactionType: 'loan_disbursement',
     amount: loan.amount,
-    description: `Loan issued: ${loan.loanPurpose}`,
+    description: `Loan issued: ${loan.purpose}`,
     recordedBy: loan.issuedBy,
   })
 

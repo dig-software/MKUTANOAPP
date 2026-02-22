@@ -3,6 +3,8 @@ import "./globals.css";
 import { UserProvider } from "@/lib/UserContext";
 import PWAInstall from "@/components/ui/PWAInstall";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: { default: "Mkutano — Village Savings Group Manager", template: "%s | Mkutano" },
   description: "Mkutano is an offline-first savings group management system for women's village savings and loan associations (VSLAs). Run better meetings, track contributions, and grow together.",
