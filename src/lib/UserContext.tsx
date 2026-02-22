@@ -51,8 +51,9 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
+      async (event, session) => {
         if (session?.user) {
+          // Supabase session exists - use it
           const { data: profile } = await supabase
             .from('users')
             .select('*')
@@ -63,11 +64,13 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
             setCurrentUser(profile as User);
             localStorage.setItem('currentUser', JSON.stringify(profile));
           }
-        } else {
-          // Session ended, clear everything
+        } else if (event === 'SIGNED_OUT') {
+          // Explicit sign out - clear everything
           localStorage.removeItem('currentUser');
           setCurrentUser(null);
         }
+        // For other cases (no session but not explicitly signed out), 
+        // preserve any stored user (demo login) and don't clear it
       }
     );
 
