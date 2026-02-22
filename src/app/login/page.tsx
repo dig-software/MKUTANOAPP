@@ -11,7 +11,8 @@ export default function LoginPage() {
   const router = useRouter();
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [loginType, setLoginType] = useState<"phone" | "email">("phone");
+  const [form, setForm] = useState({ credential: "", password: "" });
   const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -20,9 +21,31 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      // Sign in with Supabase
+      let emailToUse = form.credential;
+
+      // If login via phone, convert to email format for lookup
+      if (loginType === "phone") {
+        // For demo: convert phone to a predictable email pattern OR fetch from database
+        // For now, we'll try phone as-is and let backend handle it
+        // In production, you'd query the users table by phone number
+        const { data: userData, error: lookupError } = await supabase
+          .from("users")
+          .select("email")
+          .eq("phone", form.credential)
+          .single();
+
+        if (lookupError || !userData) {
+          setError("Phone number not found. Ask your secretary for help.");
+          setLoading(false);
+          return;
+        }
+
+        emailToUse = userData.email;
+      }
+
+      // Sign in with Supabase using email
       const { data, error: signInError } = await supabase.auth.signInWithPassword({
-        email: form.email,
+        email: emailToUse,
         password: form.password,
       });
 
@@ -57,17 +80,46 @@ export default function LoginPage() {
         </div>
 
         <div className="card">
+          {/* Login Type Toggle */}
+          <div className="mb-6 grid grid-cols-2 gap-2 bg-sand-100 rounded-lg p-1">
+            <button
+              type="button"
+              onClick={() => setLoginType("phone")}
+              className={`py-2 rounded-md font-medium text-sm transition-all ${
+                loginType === "phone"
+                  ? "bg-forest-600 text-white shadow"
+                  : "text-gray-600 hover:text-gray-900"
+              }`}
+            >
+              <Phone className="w-4 h-4 inline mr-2" />
+              Phone
+            </button>
+            <button
+              type="button"
+              onClick={() => setLoginType("email")}
+              className={`py-2 rounded-md font-medium text-sm transition-all ${
+                loginType === "email"
+                  ? "bg-forest-600 text-white shadow"
+                  : "text-gray-600 hover:text-gray-900"
+              }`}
+            >
+              <Lock className="w-4 h-4 inline mr-2" />
+              Email
+            </button>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
-              label="Email"
-              type="email"
-              placeholder="your@email.com"
+              label={loginType === "phone" ? "Phone Number" : "Email"}
+              type={loginType === "phone" ? "tel" : "email"}
+              placeholder={loginType === "phone" ? "+254 712 345 678" : "your@email.com"}
               required
-              leftIcon={<Lock className="w-4 h-4" />}
-              value={form.email}
-              onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+              leftIcon={loginType === "phone" ? <Phone className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
+              value={form.credential}
+              onChange={e => setForm(f => ({ ...f, credential: e.target.value }))}
               error={error ? error : undefined}
             />
+            
             <div>
               <label className="label">Password</label>
               <div className="relative">
@@ -86,16 +138,6 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between">
-              <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
-                <input type="checkbox" className="rounded" />
-                Remember me
-              </label>
-              <Link href="/forgot-password" className="text-sm text-forest-600 hover:underline">Forgot password?</Link>
-            </div>
-
-            {error && <p className="text-sm text-terra-600 font-medium">{error}</p>}
-
             <Button type="submit" className="w-full" loading={loading}>
               {loading ? "Signing in..." : "Sign In"}
             </Button>
@@ -103,30 +145,22 @@ export default function LoginPage() {
 
           {/* Demo credentials */}
           <div className="mt-5 p-3 bg-earth-50 rounded-xl text-xs text-earth-700 border border-earth-100">
-            <p className="font-semibold mb-2">🔑 Demo credentials (any password):</p>
+            <p className="font-semibold mb-2">🔑 Demo Accounts (Community Edition):</p>
             <div className="space-y-1 font-mono text-xs">
-              <p><strong>Secretary:</strong> +254712345678</p>
-              <p><strong>Admin:</strong> +254700000001</p>
-              <p><strong>NGO / MFI:</strong> +254700000002</p>
+              <p><strong>Secretary:</strong> Email: grace@demo.com | Pass: demo123</p>
+              <p><strong>Member (via phone):</strong> +254711000001 | Pass: demo123</p>
+              <p><strong>Member (via phone):</strong> +254711000002 | Pass: demo123</p>
               <hr className="border-earth-200 my-2" />
-              <p className="font-semibold mb-1">Members (from secretary&apos;s group):</p>
-              <p>+254711000001 (Mary Achieng)</p>
-              <p>+254711000002 (Fatuma Hassan)</p>
-              <p>+254711000003 (Alice Njeri)</p>
-              <p>+254711000004 (Beatrice Otieno)</p>
-              <p>+254711000005 (Christine Mwangi)</p>
-              <p>+254711000006 (Dorah Kamau)</p>
-              <p>+254711000007 (Esther Wambui)</p>
-              <p>+254711000008 (Florence Adhiambo)</p>
-              <p>+254711000009 (Gladys Mutua)</p>
-              <p>+254711000010 (Hannah Chebet)</p>
+              <p className="text-xs">
+                Members sign in with their <strong>phone number</strong>. Secretary signs in with <strong>email</strong>.
+              </p>
             </div>
           </div>
         </div>
 
         <p className="text-center text-sm text-gray-500 mt-5">
-          New to Mkutano?{" "}
-          <Link href="/signup" className="text-forest-600 font-semibold hover:underline">Create an account</Link>
+          New secretary?{" "}
+          <Link href="/signup" className="text-forest-600 font-semibold hover:underline">Register your group</Link>
         </p>
       </div>
     </div>

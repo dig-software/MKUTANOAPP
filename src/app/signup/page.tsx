@@ -2,25 +2,28 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Leaf, Check } from "lucide-react";
+import { Leaf, Check, AlertCircle, Copy } from "lucide-react";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import { supabase } from "@/lib/supabase";
 
-const steps = ["Account Type", "Personal Details", "Group Setup", "Confirm"];
+const steps = ["Secretary Details", "Group Setup", "Confirm"];
 
 export default function SignupPage() {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [groupCode, setGroupCode] = useState("");
+  const [groupName, setGroupName] = useState("");
+  const [copied, setCopied] = useState(false);
+
   const [form, setForm] = useState({
-    role: "secretary",
     name: "",
     phone: "",
     email: "",
     password: "",
-    nationalId: "",
     groupName: "",
     village: "",
     district: "",
@@ -29,310 +32,259 @@ export default function SignupPage() {
     currency: "KES",
   });
 
-  const next = () => setStep(s => Math.min(s + 1, 3));
+  const next = () => setStep(s => Math.min(s + 1, 2));
   const back = () => setStep(s => Math.max(s - 1, 0));
+
+  const copyCode = () => {
+    navigator.clipboard.writeText(groupCode);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const handleSubmit = async () => {
     setLoading(true);
     setError("");
 
     try {
-      // 1. Create auth account
+      // Validate form
+      if (!form.name || !form.email || !form.password || !form.phone) {
+        throw new Error("Please fill in all secretary details");
+      }
+      if (!form.groupName || !form.village || !form.district) {
+        throw new Error("Please fill in all group details");
+      }
+
+      // 1. Create Supabase auth account
       const { data: authData, error: signupError } = await supabase.auth.signUp({
         email: form.email,
         password: form.password,
       });
 
       if (signupError) throw signupError;
-      if (!authData.user) throw new Error("Failed to create user");
+      if (!authData.user) throw new Error("Failed to create account");
 
       const userId = authData.user.id;
+      const joinCode = `${form.groupName.slice(0, 3).toUpperCase()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
 
-      // 2. Create user profile
-      if (form.role === "secretary") {
-        // Create group first
-        const { data: groupData, error: groupError } = await supabase
-          .from("groups")
-          .insert({
-            name: form.groupName,
-            village: form.village,
-            district: form.district,
-            country: form.country,
-            shareValue: Number(form.shareValue),
-            currency: form.currency,
-            secretaryId: userId,
-            secretaryName: form.name,
-            secretaryPhone: form.phone,
-            joinCode: `${form.groupName.slice(0, 3).toUpperCase()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`,
-          })
-          .select()
-          .single();
+      // 2. Create group in database
+      const { data: groupData, error: groupError } = await supabase
+        .from("groups")
+        .insert({
+          name: form.groupName,
+          village: form.village,
+          district: form.district,
+          country: form.country,
+          shareValue: Number(form.shareValue),
+          currency: form.currency,
+          secretaryId: userId,
+          secretaryName: form.name,
+          secretaryPhone: form.phone,
+          joinCode: joinCode,
+        })
+        .select()
+        .single();
 
-        if (groupError) throw groupError;
+      if (groupError) throw groupError;
 
-        // Create user profile linked to group
-        const { error: userError } = await supabase
-          .from("users")
-          .insert({
-            id: userId,
-            name: form.name,
-            email: form.email,
-            phone: form.phone,
-            role: "secretary",
-            groupId: groupData.id,
-            avatarInitials: form.name
-              .split(" ")
-              .map((n) => n[0])
-              .join("")
-              .toUpperCase()
-              .slice(0, 2),
-            isActive: true,
-          });
+      // 3. Create secretary user profile
+      const { error: userError } = await supabase
+        .from("users")
+        .insert({
+          id: userId,
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          role: "secretary",
+          groupId: groupData.id,
+          avatarInitials: form.name
+            .split(" ")
+            .map((n) => n[0])
+            .join("")
+            .toUpperCase()
+            .slice(0, 2),
+          isActive: true,
+        });
 
-        if (userError) throw userError;
-      } else if (form.role === "member") {
-        // Find group by join code
-        const { data: groups, error: groupError } = await supabase
-          .from("groups")
-          .select("id")
-          .eq("joinCode", form.groupName)
-          .single();
+      if (userError) throw userError;
 
-        if (groupError || !groups) throw new Error("Invalid group join code");
-
-        // Create member profile
-        const { error: userError } = await supabase
-          .from("users")
-          .insert({
-            id: userId,
-            name: form.name,
-            email: form.email,
-            phone: form.phone,
-            role: "member",
-            groupId: groups.id,
-            nationalId: form.nationalId || null,
-            avatarInitials: form.name
-              .split(" ")
-              .map((n) => n[0])
-              .join("")
-              .toUpperCase()
-              .slice(0, 2),
-            isActive: true,
-          });
-
-        if (userError) throw userError;
-      } else {
-        // NGO/Admin user
-        const { error: userError } = await supabase
-          .from("users")
-          .insert({
-            id: userId,
-            name: form.name,
-            email: form.email,
-            phone: form.phone,
-            role: form.role,
-            avatarInitials: form.name
-              .split(" ")
-              .map((n) => n[0])
-              .join("")
-              .toUpperCase()
-              .slice(0, 2),
-            isActive: true,
-          });
-
-        if (userError) throw userError;
-      }
-
-      // Redirect to dashboard
-      router.push("/dashboard");
-    } catch (error: any) {
-      setError(error.message || "Failed to create account");
-      setLoading(false)
+      setGroupCode(joinCode);
+      setGroupName(form.groupName);
+      setSuccess(true);
+      
+      // Auto-redirect after 5 seconds
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 5000);
+    } catch (err: any) {
+      setError(err.message || "Registration failed");
+      setLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen bg-sand-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-lg">
+      <div className="w-full max-w-2xl">
         {/* Logo */}
         <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2.5">
+          <Link href="/" className="inline-flex items-center gap-2.5 justify-center">
             <div className="w-10 h-10 bg-forest-600 rounded-xl flex items-center justify-center shadow">
               <Leaf className="w-5 h-5 text-white" />
             </div>
             <span className="text-2xl font-display font-bold text-gray-900">Mkutano</span>
           </Link>
-          <h1 className="text-2xl font-semibold text-gray-900 mt-5">Create your account</h1>
-          <p className="text-gray-500 text-sm mt-1">Free to start · No credit card needed</p>
+          <h1 className="text-3xl font-semibold text-gray-900 mt-6">Register Your Group</h1>
+          <p className="text-gray-500 text-sm mt-2">Community Edition - Secretary-Led Group Management</p>
         </div>
 
-        {/* Step indicator */}
-        <div className="flex items-center justify-center gap-2 mb-8">
-          {steps.map((s, i) => (
-            <div key={s} className="flex items-center gap-2">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${i < step ? "bg-forest-600 text-white" : i === step ? "bg-forest-600 text-white ring-4 ring-forest-100" : "bg-sand-200 text-gray-500"}`}>
-                {i < step ? <Check className="w-4 h-4" /> : i + 1}
+        {/* Success State */}
+        {success && (
+          <div className="card bg-forest-50 border-2 border-forest-200 mb-6">
+            <div className="flex gap-4">
+              <div className="flex-shrink-0">
+                <Check className="w-6 h-6 text-forest-600" />
               </div>
-              <span className={`text-xs font-medium hidden sm:inline ${i === step ? "text-forest-700" : "text-gray-400"}`}>{s}</span>
-              {i < steps.length - 1 && <div className={`w-6 h-0.5 ${i < step ? "bg-forest-600" : "bg-sand-200"}`} />}
-            </div>
-          ))}
-        </div>
-
-        <div className="card">
-          {step === 0 && (
-            <div>
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">I am joining as...</h2>
-              <div className="space-y-3">
-                {[
-                  { value: "secretary", emoji: "📋", title: "Group Secretary", desc: "I run savings group meetings and manage records" },
-                  { value: "member", emoji: "👩", title: "Group Member", desc: "I want to view my personal savings and loan balance" },
-                  { value: "ngo", emoji: "🏢", title: "NGO / MFI Partner", desc: "I support or fund multiple savings groups" },
-                  { value: "admin", emoji: "⚙️", title: "Platform Admin", desc: "I manage the Mkutano platform (admin only)" },
-                ].map((role) => (
-                  <label key={role.value} className={`flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all ${form.role === role.value ? "border-forest-500 bg-forest-50" : "border-sand-200 hover:border-sand-300"}`}>
-                    <input type="radio" name="role" value={role.value} className="hidden" checked={form.role === role.value} onChange={e => setForm(f => ({ ...f, role: e.target.value }))} />
-                    <span className="text-2xl">{role.emoji}</span>
-                    <div>
-                      <p className="text-sm font-semibold text-gray-900">{role.title}</p>
-                      <p className="text-xs text-gray-500">{role.desc}</p>
-                    </div>
-                    {form.role === role.value && <Check className="w-5 h-5 text-forest-600 ml-auto" />}
-                  </label>
-                ))}
-              </div>
-              <Button className="w-full mt-6" onClick={next}>Continue →</Button>
-            </div>
-          )}
-
-          {step === 1 && (
-            <div>
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                Your personal details
-              </h2>
-              <div className="space-y-4">
-                <Input
-                  label="Full Name"
-                  placeholder="Grace Wanjiku"
-                  required
-                  value={form.name}
-                  onChange={(e) =>
-                    setForm((f) => ({ ...f, name: e.target.value }))
-                  }
-                />
-                <Input
-                  label="Phone Number"
-                  type="tel"
-                  placeholder="+254 7XX XXX XXX"
-                  required
-                  value={form.phone}
-                  onChange={(e) =>
-                    setForm((f) => ({ ...f, phone: e.target.value }))
-                  }
-                />
-                <Input
-                  label="Email (optional)"
-                  type="email"
-                  placeholder="grace@email.com"
-                  value={form.email}
-                  onChange={(e) =>
-                    setForm((f) => ({ ...f, email: e.target.value }))
-                  }
-                />
-                {form.role === "member" && (
-                  <Input
-                    label="National ID (optional)"
-                    placeholder="e.g. 12345678"
-                    value={form.nationalId}
-                    onChange={(e) =>
-                      setForm((f) => ({ ...f, nationalId: e.target.value }))
-                    }
-                  />
-                )}
-                <Input
-                  label="Password"
-                  type="password"
-                  placeholder="Choose a strong password"
-                  required
-                  value={form.password}
-                  onChange={(e) =>
-                    setForm((f) => ({ ...f, password: e.target.value }))
-                  }
-                />
-              </div>
-              <div className="flex gap-3 mt-6">
-                <Button variant="outline" className="flex-1" onClick={back}>
-                  ← Back
-                </Button>
-                <Button className="flex-1" onClick={next}>
-                  Continue →
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {step === 2 && (
-            <div>
-              <h2 className="text-lg font-semibold text-gray-900 mb-1">
-                Set up your group
-              </h2>
-              <p className="text-sm text-gray-500 mb-4">
-                {form.role === "member"
-                  ? "Enter your group's join code provided by your secretary"
-                  : "You can add members and settings after signing up."}
-              </p>
-              {form.role === "member" ? (
-                <div className="space-y-4">
-                  <Input
-                    label="Group Join Code"
-                    placeholder="e.g. MAE-X9K2"
-                    required
-                    value={form.groupName}
-                    onChange={(e) =>
-                      setForm((f) => ({ ...f, groupName: e.target.value }))
-                    }
-                    helpText="Ask your group secretary for the join code"
-                  />
+              <div className="flex-1">
+                <h3 className="font-semibold text-forest-900 mb-2">✓ Group Created Successfully!</h3>
+                <p className="text-forest-800 text-sm mb-4">
+                  <strong>{groupName}</strong> is ready. Your members will use this code to access:
+                </p>
+                <div className="bg-white rounded-lg p-4 font-mono text-lg font-bold text-center text-forest-600 border-2 border-dashed border-forest-300 mb-3">
+                  {groupCode}
                 </div>
-              ) : (
-                <div className="space-y-4">
+                <button
+                  onClick={copyCode}
+                  className="text-sm text-forest-700 hover:text-forest-800 font-semibold flex items-center gap-2"
+                >
+                  <Copy className="w-4 h-4" />
+                  {copied ? "Copied!" : "Copy code"}
+                </button>
+                <p className="text-forest-700 text-sm mt-4">
+                  Next: Add member phone numbers to invite them. Members will receive SMS notification to set their password.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Steps Indicator */}
+        {!success && (
+          <div className="mb-8 flex gap-2 justify-center">
+            {steps.map((s, i) => (
+              <div key={i} className="flex items-center gap-2">
+                <div
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
+                    i === step
+                      ? "bg-forest-600 text-white ring-4 ring-forest-100"
+                      : i < step
+                      ? "bg-forest-200 text-forest-700"
+                      : "bg-gray-200 text-gray-600"
+                  }`}
+                >
+                  {i < step ? <Check className="w-4 h-4" /> : i + 1}
+                </div>
+                {i < steps.length - 1 && (
+                  <div className={`w-12 h-1 transition-all ${i < step ? "bg-forest-200" : "bg-gray-200"}`} />
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Form Card */}
+        {!success && (
+          <div className="card">
+            {error && (
+              <div className="mb-6 p-4 bg-terra-50 border border-terra-200 rounded-lg flex gap-3">
+                <AlertCircle className="w-5 h-5 text-terra-600 flex-shrink-0 mt-0.5" />
+                <p className="text-terra-800 text-sm">{error}</p>
+              </div>
+            )}
+
+            <div className="space-y-5">
+              {/* Step 1: Secretary Details */}
+              {step === 0 && (
+                <>
+                  <h2 className="text-xl font-semibold text-gray-900 mb-5">Your Information (Secretary)</h2>
+                  
+                  <Input
+                    label="Full Name"
+                    placeholder="Grace Wanjiku"
+                    value={form.name}
+                    onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                  />
+                  
+                  <Input
+                    label="Phone Number"
+                    type="tel"
+                    placeholder="+254 712 345 678"
+                    value={form.phone}
+                    onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
+                  />
+                  
+                  <Input
+                    label="Email Address"
+                    type="email"
+                    placeholder="grace@example.com"
+                    value={form.email}
+                    onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                  />
+                  
+                  <Input
+                    label="Password"
+                    type="password"
+                    placeholder="Create a strong password"
+                    value={form.password}
+                    onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
+                  />
+
+                  <p className="text-xs text-gray-500 mt-3">
+                    You are registering as a Group Secretary. You will manage all group activities and add members.
+                  </p>
+                </>
+              )}
+
+              {/* Step 1: Group Setup */}
+              {step === 1 && (
+                <>
+                  <h2 className="text-xl font-semibold text-gray-900 mb-5">Your Group Information</h2>
+                  
                   <Input
                     label="Group Name"
-                    placeholder="e.g. Maendeleo wa Wanawake"
-                    required
+                    placeholder="e.g., Kibera Women's Savings"
                     value={form.groupName}
-                    onChange={(e) =>
-                      setForm((f) => ({ ...f, groupName: e.target.value }))
-                    }
+                    onChange={e => setForm(f => ({ ...f, groupName: e.target.value }))}
                   />
-                  <div className="grid grid-cols-2 gap-4">
-                    <Input
-                      label="Village / Ward"
-                      placeholder="Kangemi"
-                      value={form.village}
-                      onChange={(e) =>
-                        setForm((f) => ({ ...f, village: e.target.value }))
-                      }
-                    />
-                    <Input
-                      label="District / County"
-                      placeholder="Westlands"
-                      value={form.district}
-                      onChange={(e) =>
-                        setForm((f) => ({ ...f, district: e.target.value }))
-                      }
-                    />
-                  </div>
+                  
+                  <Input
+                    label="Village / Community"
+                    placeholder="e.g., Kibera"
+                    value={form.village}
+                    onChange={e => setForm(f => ({ ...f, village: e.target.value }))}
+                  />
+                  
+                  <Input
+                    label="District / County"
+                    placeholder="e.g., Nairobi"
+                    value={form.district}
+                    onChange={e => setForm(f => ({ ...f, district: e.target.value }))}
+                  />
+
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label htmlFor="currency-select" className="label">Currency</label>
+                      <label className="label">Member Share Value</label>
+                      <input
+                        type="number"
+                        className="input-field"
+                        value={form.shareValue}
+                        onChange={e => setForm(f => ({ ...f, shareValue: e.target.value }))}
+                      />
+                    </div>
+                    <div>
+                      <label className="label">Currency</label>
                       <select
-                        id="currency-select"
                         className="input-field"
                         value={form.currency}
-                        onChange={(e) =>
-                          setForm((f) => ({ ...f, currency: e.target.value }))
-                        }
+                        onChange={e => setForm(f => ({ ...f, currency: e.target.value }))}
                       >
                         <option>KES</option>
                         <option>UGX</option>
@@ -341,86 +293,95 @@ export default function SignupPage() {
                         <option>RWF</option>
                       </select>
                     </div>
-                    <Input
-                      label="Share Value"
-                      type="number"
-                      placeholder="100"
-                      value={form.shareValue}
-                      onChange={(e) =>
-                        setForm((f) => ({ ...f, shareValue: e.target.value }))
-                      }
-                    />
                   </div>
-                </div>
+
+                  <p className="text-xs text-gray-500 mt-3">
+                    These are the default settings for member contributions. You can change them later.
+                  </p>
+                </>
               )}
-              <div className="flex gap-3 mt-6">
-                <Button variant="outline" className="flex-1" onClick={back}>
-                  ← Back
-                </Button>
-                <Button className="flex-1" onClick={next}>
-                  Continue →
-                </Button>
-              </div>
-            </div>
-          )}
 
-          {step === 3 && (
-            <div>
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                Confirm & create your account
-              </h2>
-              <div className="space-y-2 bg-sand-50 rounded-xl p-4 mb-6 text-sm">
-                {([
-                  ["Role", form.role],
-                  ["Name", form.name || "—"],
-                  ["Phone", form.phone || "—"],
-                  form.role === "member"
-                    ? ["Group Code", form.groupName || "—"]
-                    : ["Group Name", form.groupName || "—"],
-                  form.role === "secretary" && [
-                    "Share Value",
-                    `${form.currency} ${form.shareValue}`,
-                  ],
-                  form.nationalId &&
-                    form.role === "member" && ["National ID", form.nationalId],
-                ] as Array<[string, string] | false>)
-                  .filter((item) => item !== false)
-                  .map(([k, v]) => (
-                    <div key={k} className="flex justify-between">
-                      <span className="text-gray-500">{k}</span>
-                      <span className="font-medium text-gray-900 capitalize">
-                        {v}
-                      </span>
+              {/* Step 3: Confirmation */}
+              {step === 2 && (
+                <>
+                  <h2 className="text-xl font-semibold text-gray-900 mb-5">Confirm Your Details</h2>
+                  
+                  <div className="space-y-4 bg-sand-50 rounded-xl p-5 text-sm">
+                    <div>
+                      <p className="text-gray-600 font-medium">Secretary Name</p>
+                      <p className="text-gray-900">{form.name}</p>
                     </div>
-                  ))}
-              </div>
-              <p className="text-xs text-gray-500 mb-4">
-                By creating an account, you agree to our{" "}
-                <Link href="/terms" className="text-forest-600 hover:underline">
-                  Terms of Service
-                </Link>{" "}
-                and{" "}
-                <Link href="/privacy" className="text-forest-600 hover:underline">
-                  Privacy Policy
-                </Link>
-                .
-              </p>
-              <div className="flex gap-3">
-                <Button variant="outline" className="flex-1" onClick={back}>
-                  ← Back
-                </Button>
-                <Button className="flex-1" loading={loading} onClick={handleSubmit}>
-                  {loading ? "Creating account..." : "Create Account"}
-                </Button>
-              </div>
-            </div>
-          )}
-        </div>
+                    <div className="border-t border-sand-200 pt-4">
+                      <p className="text-gray-600 font-medium">Phone</p>
+                      <p className="text-gray-900">{form.phone}</p>
+                    </div>
+                    <div className="border-t border-sand-200 pt-4">
+                      <p className="text-gray-600 font-medium">Email</p>
+                      <p className="text-gray-900">{form.email}</p>
+                    </div>
+                    <div className="border-t border-sand-200 pt-4">
+                      <p className="text-gray-600 font-medium">Group Name</p>
+                      <p className="text-gray-900">{form.groupName}</p>
+                    </div>
+                    <div className="border-t border-sand-200 pt-4">
+                      <p className="text-gray-600 font-medium">Location</p>
+                      <p className="text-gray-900">{form.village}, {form.district}</p>
+                    </div>
+                    <div className="border-t border-sand-200 pt-4">
+                      <p className="text-gray-600 font-medium">Member Share Value</p>
+                      <p className="text-gray-900">{form.currency} {form.shareValue}</p>
+                    </div>
+                  </div>
 
-        <p className="text-center text-sm text-gray-500 mt-5">
-          Already have an account?{" "}
-          <Link href="/login" className="text-forest-600 font-semibold hover:underline">Sign in</Link>
-        </p>
+                  <div className="p-4 bg-forest-50 border border-forest-200 rounded-lg text-sm">
+                    <p className="text-forest-800">
+                      <strong>After Registration:</strong> You will receive a unique group code to share with members. Members can then sign in with their phone number.
+                    </p>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Buttons */}
+            <div className="flex gap-3 mt-8 justify-between">
+              <button
+                onClick={back}
+                disabled={step === 0 || loading}
+                className="btn-outline disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Back
+              </button>
+
+              {step < 2 ? (
+                <button onClick={next} disabled={loading} className="btn-primary">
+                  Next Step →
+                </button>
+              ) : (
+                <button onClick={handleSubmit} disabled={loading} className="btn-primary flex items-center gap-2">
+                  {loading ? "Creating Group..." : "Create Group"}
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Footer */}
+        {!success && (
+          <p className="text-center text-sm text-gray-600 mt-6">
+            Have a group account? <Link href="/login" className="text-forest-600 font-semibold hover:underline">Sign In</Link>
+          </p>
+        )}
+
+        {success && (
+          <div className="text-center mt-6">
+            <button 
+              onClick={() => router.push("/dashboard")}
+              className="text-forest-600 font-semibold hover:underline"
+            >
+              Go to Dashboard →
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
