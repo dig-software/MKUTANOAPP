@@ -27,7 +27,6 @@ export default function MyContributionsPage() {
               <tr className="border-b border-sand-100">
                 <th className="table-header">Date</th>
                 <th className="table-header">Meeting</th>
-                <th className="table-header">Shares</th>
                 <th className="table-header">Amount</th>
                 <th className="table-header">Type</th>
                 <th className="table-header">Status</th>
@@ -40,7 +39,6 @@ export default function MyContributionsPage() {
                   <tr key={c.id}>
                     <td className="table-cell">{formatDate(c.recordedAt)}</td>
                     <td className="table-cell">Session #{meeting?.sessionNumber}</td>
-                    <td className="table-cell text-center font-semibold">{c.shares}</td>
                     <td className="table-cell font-bold text-forest-700">{formatCurrency(c.amount)}</td>
                     <td className="table-cell capitalize">{c.type.replace("_", " ")}</td>
                     <td className="table-cell">

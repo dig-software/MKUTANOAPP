@@ -81,23 +81,22 @@ export const mockGroup: Group = {
   createdAt: "2024-01-15",
   cycleStartDate: "2025-01-01",
   cycleEndDate: "2025-12-31",
-  shareValue: 100,
   currency: "KES",
   joinCode: "MAE-X9K2",
   isActive: true,
 };
 
 export const mockMembers: Member[] = [
-  { id: "m1", groupId: "g1", userId: "u2", name: "Mary Achieng", phone: "+254711000001", nationalId: "12345678", sharesHeld: 5, totalSaved: 8500, totalLoaned: 5000, totalRepaid: 5750, walletBalance: 8500, joinedAt: "2024-01-15", status: "active" },
-  { id: "m2", groupId: "g1", userId: "u3", name: "Fatuma Hassan", phone: "+254711000002", nationalId: "23456789", sharesHeld: 3, totalSaved: 6200, totalLoaned: 3000, totalRepaid: 3000, walletBalance: 6200, joinedAt: "2024-01-15", status: "active" },
-  { id: "m3", groupId: "g1", userId: "u4", name: "Alice Njeri", phone: "+254711000003", nationalId: "34567890", sharesHeld: 7, totalSaved: 12100, totalLoaned: 8000, totalRepaid: 9200, walletBalance: 12100, joinedAt: "2024-01-15", status: "active" },
-  { id: "m4", groupId: "g1", userId: "u5", name: "Beatrice Otieno", phone: "+254711000004", nationalId: "45678901", sharesHeld: 2, totalSaved: 4300, totalLoaned: 2000, totalRepaid: 2300, walletBalance: 4300, joinedAt: "2024-02-01", status: "active" },
-  { id: "m5", groupId: "g1", userId: "u6", name: "Christine Mwangi", phone: "+254711000005", nationalId: "56789012", sharesHeld: 4, totalSaved: 7800, totalLoaned: 4000, totalRepaid: 4400, walletBalance: 7800, joinedAt: "2024-02-01", status: "active" },
-  { id: "m6", groupId: "g1", userId: "u7", name: "Dorah Kamau", phone: "+254711000006", nationalId: "67890123", sharesHeld: 6, totalSaved: 10200, totalLoaned: 6000, totalRepaid: 6600, walletBalance: 10200, joinedAt: "2024-01-15", status: "active" },
-  { id: "m7", groupId: "g1", userId: "u8", name: "Esther Wambui", phone: "+254711000007", nationalId: "78901234", sharesHeld: 2, totalSaved: 3900, totalLoaned: 0, totalRepaid: 0, walletBalance: 3900, joinedAt: "2024-03-01", status: "active" },
-  { id: "m8", groupId: "g1", userId: "u9", name: "Florence Adhiambo", phone: "+254711000008", nationalId: "89012345", sharesHeld: 5, totalSaved: 9100, totalLoaned: 5000, totalRepaid: 5500, walletBalance: 9100, joinedAt: "2024-01-15", status: "active" },
-  { id: "m9", groupId: "g1", userId: "u10", name: "Gladys Mutua", phone: "+254711000009", nationalId: "90123456", sharesHeld: 3, totalSaved: 5600, totalLoaned: 3000, totalRepaid: 2100, walletBalance: 5600, joinedAt: "2024-01-15", status: "active" },
-  { id: "m10", groupId: "g1", userId: "u11", name: "Hannah Chebet", phone: "+254711000010", nationalId: "01234567", sharesHeld: 1, totalSaved: 2100, totalLoaned: 0, totalRepaid: 0, walletBalance: 2100, joinedAt: "2024-04-01", status: "inactive" },
+  { id: "m1", groupId: "g1", userId: "u2", name: "Mary Achieng", phone: "+254711000001", nationalId: "12345678", totalSaved: 8500, totalLoaned: 5000, totalRepaid: 5750, walletBalance: 8500, joinedAt: "2024-01-15", status: "active" },
+  { id: "m2", groupId: "g1", userId: "u3", name: "Fatuma Hassan", phone: "+254711000002", nationalId: "23456789", totalSaved: 6200, totalLoaned: 3000, totalRepaid: 3000, walletBalance: 6200, joinedAt: "2024-01-15", status: "active" },
+  { id: "m3", groupId: "g1", userId: "u4", name: "Alice Njeri", phone: "+254711000003", nationalId: "34567890", totalSaved: 12100, totalLoaned: 8000, totalRepaid: 9200, walletBalance: 12100, joinedAt: "2024-01-15", status: "active" },
+  { id: "m4", groupId: "g1", userId: "u5", name: "Beatrice Otieno", phone: "+254711000004", nationalId: "45678901", totalSaved: 4300, totalLoaned: 2000, totalRepaid: 2300, walletBalance: 4300, joinedAt: "2024-02-01", status: "active" },
+  { id: "m5", groupId: "g1", userId: "u6", name: "Christine Mwangi", phone: "+254711000005", nationalId: "56789012", totalSaved: 7800, totalLoaned: 4000, totalRepaid: 4400, walletBalance: 7800, joinedAt: "2024-02-01", status: "active" },
+  { id: "m6", groupId: "g1", userId: "u7", name: "Dorah Kamau", phone: "+254711000006", nationalId: "67890123", totalSaved: 10200, totalLoaned: 6000, totalRepaid: 6600, walletBalance: 10200, joinedAt: "2024-01-15", status: "active" },
+  { id: "m7", groupId: "g1", userId: "u8", name: "Esther Wambui", phone: "+254711000007", nationalId: "78901234", totalSaved: 3900, totalLoaned: 0, totalRepaid: 0, walletBalance: 3900, joinedAt: "2024-03-01", status: "active" },
+  { id: "m8", groupId: "g1", userId: "u9", name: "Florence Adhiambo", phone: "+254711000008", nationalId: "89012345", totalSaved: 9100, totalLoaned: 5000, totalRepaid: 5500, walletBalance: 9100, joinedAt: "2024-01-15", status: "active" },
+  { id: "m9", groupId: "g1", userId: "u10", name: "Gladys Mutua", phone: "+254711000009", nationalId: "90123456", totalSaved: 5600, totalLoaned: 3000, totalRepaid: 2100, walletBalance: 5600, joinedAt: "2024-01-15", status: "active" },
+  { id: "m10", groupId: "g1", userId: "u11", name: "Hannah Chebet", phone: "+254711000010", nationalId: "01234567", totalSaved: 2100, totalLoaned: 0, totalRepaid: 0, walletBalance: 2100, joinedAt: "2024-04-01", status: "inactive" },
 ];
 
 export const mockMeetings: Meeting[] = [
@@ -108,11 +107,11 @@ export const mockMeetings: Meeting[] = [
 ];
 
 export const mockContributions: Contribution[] = [
-  { id: "c1", meetingId: "mt2", groupId: "g1", memberId: "m1", memberName: "Mary Achieng", shares: 5, amount: 500, type: "share", recordedAt: "2026-03-01T10:05:00", recordedBy: "u1", confirmed: true },
-  { id: "c2", meetingId: "mt2", groupId: "g1", memberId: "m2", memberName: "Fatuma Hassan", shares: 3, amount: 300, type: "share", recordedAt: "2026-03-01T10:07:00", recordedBy: "u1", confirmed: true },
-  { id: "c3", meetingId: "mt2", groupId: "g1", memberId: "m3", memberName: "Alice Njeri", shares: 7, amount: 700, type: "share", recordedAt: "2026-03-01T10:09:00", recordedBy: "u1", confirmed: true },
-  { id: "c4", meetingId: "mt2", groupId: "g1", memberId: "m4", memberName: "Beatrice Otieno", shares: 2, amount: 200, type: "share", recordedAt: "2026-03-01T10:11:00", recordedBy: "u1", confirmed: true },
-  { id: "c5", meetingId: "mt2", groupId: "g1", memberId: "m5", memberName: "Christine Mwangi", shares: 4, amount: 400, type: "share", recordedAt: "2026-03-01T10:13:00", recordedBy: "u1", confirmed: false },
+  { id: "c1", meetingId: "mt2", groupId: "g1", memberId: "m1", memberName: "Mary Achieng", amount: 500, type: "contribution", recordedAt: "2026-03-01T10:05:00", recordedBy: "u1", confirmed: true },
+  { id: "c2", meetingId: "mt2", groupId: "g1", memberId: "m2", memberName: "Fatuma Hassan", amount: 300, type: "contribution", recordedAt: "2026-03-01T10:07:00", recordedBy: "u1", confirmed: true },
+  { id: "c3", meetingId: "mt2", groupId: "g1", memberId: "m3", memberName: "Alice Njeri", amount: 700, type: "contribution", recordedAt: "2026-03-01T10:09:00", recordedBy: "u1", confirmed: true },
+  { id: "c4", meetingId: "mt2", groupId: "g1", memberId: "m4", memberName: "Beatrice Otieno", amount: 200, type: "contribution", recordedAt: "2026-03-01T10:11:00", recordedBy: "u1", confirmed: true },
+  { id: "c5", meetingId: "mt2", groupId: "g1", memberId: "m5", memberName: "Christine Mwangi", amount: 400, type: "contribution", recordedAt: "2026-03-01T10:13:00", recordedBy: "u1", confirmed: false },
 ];
 
 export const mockLoans: Loan[] = [
@@ -132,7 +131,7 @@ export const mockRepayments: Repayment[] = [
 export const mockAuditLogs: AuditLog[] = [
   { id: "a1", groupId: "g1", actorId: "u1", actorName: "Grace Wanjiku", action: "MEETING_CLOSED", entity: "Meeting", entityId: "mt1", details: "Session #24 closed. Contributions: KES 18,500. Loans: KES 12,000.", timestamp: "2026-02-15T14:30:00", ipAddress: "192.168.1.5" },
   { id: "a2", groupId: "g1", actorId: "u1", actorName: "Grace Wanjiku", action: "LOAN_ISSUED", entity: "Loan", entityId: "l1", details: "KES 5,000 loan issued to Mary Achieng for Business capital.", timestamp: "2026-02-15T11:20:00", ipAddress: "192.168.1.5" },
-  { id: "a3", groupId: "g1", actorId: "u1", actorName: "Grace Wanjiku", action: "CONTRIBUTION_RECORDED", entity: "Contribution", entityId: "c1", details: "5 shares (KES 500) recorded for Mary Achieng.", timestamp: "2026-03-01T10:05:00", ipAddress: "192.168.1.5" },
+  { id: "a3", groupId: "g1", actorId: "u1", actorName: "Grace Wanjiku", action: "CONTRIBUTION_RECORDED", entity: "Contribution", entityId: "c1", details: "KES 500 contribution recorded for Mary Achieng.", timestamp: "2026-03-01T10:05:00", ipAddress: "192.168.1.5" },
   { id: "a4", groupId: "g1", actorId: "u1", actorName: "Grace Wanjiku", action: "MEETING_OPENED", entity: "Meeting", entityId: "mt2", details: "Session #25 opened at Kangemi Community Hall.", timestamp: "2026-03-01T09:45:00", ipAddress: "192.168.1.5" },
   { id: "a5", groupId: "g1", actorId: "u1", actorName: "Grace Wanjiku", action: "MEMBER_ADDED", entity: "Member", entityId: "m10", details: "New member Hannah Chebet added to the group.", timestamp: "2026-04-01T08:00:00", ipAddress: "192.168.1.5" },
 ];

@@ -50,9 +50,8 @@ export default function SettingsPage() {
               <Input label="Village / Ward" defaultValue={mockGroup.village} />
               <Input label="District / County" defaultValue={mockGroup.district} />
             </div>
-            <div className="grid sm:grid-cols-3 gap-4">
+            <div className="grid sm:grid-cols-2 gap-4">
               <Input label="Currency" defaultValue={mockGroup.currency} />
-              <Input label="Share Value" type="number" defaultValue={mockGroup.shareValue.toString()} />
               <Input label="Member Count" defaultValue={mockGroup.memberCount.toString()} disabled />
             </div>
             <div className="grid sm:grid-cols-2 gap-4">

@@ -29,7 +29,7 @@ export default function AuditLogPage() {
       user: "Mary Achieng",
       action: "contribution_recorded",
       actionLabel: "Recorded Contribution",
-      details: "3 shares for KES 750 in Session #25",
+      details: "KES 750 contribution recorded in Session #25",
       status: "success",
       ipAddress: "192.168.1.101",
     },
@@ -182,6 +182,7 @@ export default function AuditLogPage() {
             <Input placeholder="Search by user name or IP address..." />
           </div>
           <select
+            aria-label="Filter by action type"
             value={selectedAction}
             onChange={(e) => setSelectedAction(e.target.value)}
             className="px-4 py-2 border border-sand-200 rounded-lg text-sm bg-white"
@@ -195,6 +196,7 @@ export default function AuditLogPage() {
             <option value="group_verified">Group Verified</option>
           </select>
           <select
+            aria-label="Filter by user"
             value={selectedUser}
             onChange={(e) => setSelectedUser(e.target.value)}
             className="px-4 py-2 border border-sand-200 rounded-lg text-sm bg-white"

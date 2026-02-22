@@ -27,7 +27,6 @@ export function createSecretaryAccount(secretary: {
   village: string;
   district: string;
   country: string;
-  shareValue: number;
   currency: string;
 }): { user: User; group: Group } {
   // Generate IDs
@@ -69,7 +68,6 @@ export function createSecretaryAccount(secretary: {
     cycleEndDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
       .toISOString()
       .split("T")[0],
-    shareValue: secretary.shareValue,
     currency: secretary.currency,
     joinCode: joinCode,
     isActive: true,
@@ -138,7 +136,6 @@ export function addMemberToGroup(groupId: string, member: {
     name: member.name,
     phone: member.phone,
     nationalId: member.nationalId,
-    sharesHeld: 0,
     totalSaved: 0,
     totalLoaned: 0,
     totalRepaid: 0,

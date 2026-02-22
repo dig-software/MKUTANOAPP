@@ -45,7 +45,7 @@ export default function MeetingHistoryPage() {
                     <div>
                       <p className="text-xs text-gray-500 mb-1">My Contribution</p>
                       <p className="text-lg font-bold text-forest-700">{formatCurrency(myContribution.amount)}</p>
-                      <p className="text-xs text-gray-500">{myContribution.shares} shares</p>
+                      <p className="text-xs text-gray-500">Contribution recorded</p>
                     </div>
                   )}
                   {myRepayment && (

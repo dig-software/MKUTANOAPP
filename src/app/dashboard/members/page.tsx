@@ -1,36 +1,29 @@
 "use client";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useCurrentUser } from "@/lib/UserContext";
-import { Badge } from "@/components/ui/Badge";
-import { getInitials, formatCurrency } from "@/lib/utils";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import {
-  Plus,
-  Search,
-  Download,
-  Users,
-  Trash2,
-  Copy,
-  Check,
-  AlertCircle,
-} from "lucide-react";
-import Input from "@/components/ui/Input";
+import { useCurrentUser } from "@/lib/UserContext";
+import { addMemberToGroup, getGroupById, getMembersByGroup, removeMemberFromGroup } from "@/lib/accountManager";
+import { mockGroup, mockMembers } from "@/lib/mockData";
+import type { Group, Member } from "@/lib/types";
+import { Badge } from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import Input from "@/components/ui/Input";
+import { formatCurrency, getInitials } from "@/lib/utils";
 import {
-  getMembersByGroup,
-  addMemberToGroup,
-  removeMemberFromGroup,
-  getGroupById,
-} from "@/lib/accountManager";
-import { mockMembers } from "@/lib/mockData";
-import { Group, Member } from "@/lib/types";
+  AlertCircle,
+  Check,
+  Copy,
+  Download,
+  Plus,
+  Search,
+  Trash2,
+  Users,
+} from "lucide-react";
 
 export default function MembersPage() {
-  const router = useRouter();
   const { currentUser } = useCurrentUser();
-  const [group, setGroup] = useState<Group | null>(null);
+  const [group, setGroup] = useState<Group | null>(mockGroup);
   const [members, setMembers] = useState<Member[]>(mockMembers);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -137,8 +130,8 @@ export default function MembersPage() {
   );
 
   const activeMembers = members.filter((m) => m.status === "active").length;
-  const totalShares = members.reduce((s, m) => s + m.sharesHeld, 0);
   const totalSaved = members.reduce((s, m) => s + m.totalSaved, 0);
+  const totalLoaned = members.reduce((s, m) => s + m.totalLoaned, 0);
 
   return (
     <div className="space-y-6">
@@ -172,7 +165,7 @@ export default function MembersPage() {
             <div>
               <h3 className="font-semibold text-gray-900">Group Join Code</h3>
               <p className="text-sm text-gray-600 mt-1">
-                Share this code with members so they can join
+                Send this code to members so they can join
               </p>
               <p className="text-2xl font-bold text-emerald-600 mt-2 font-mono tracking-widest">
                 {group.joinCode}
@@ -216,7 +209,7 @@ export default function MembersPage() {
               placeholder="e.g. Jane Mwangi"
               required
               value={formData.name}
-              onChange={(e) =>
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setFormData({ ...formData, name: e.target.value })
               }
             />
@@ -226,7 +219,7 @@ export default function MembersPage() {
               placeholder="+254 7XX XXX XXX"
               required
               value={formData.phone}
-              onChange={(e) =>
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setFormData({ ...formData, phone: e.target.value })
               }
             />
@@ -234,7 +227,7 @@ export default function MembersPage() {
               label="National ID (Optional)"
               placeholder="e.g. 12345678"
               value={formData.nationalId}
-              onChange={(e) =>
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setFormData({ ...formData, nationalId: e.target.value })
               }
             />
@@ -260,7 +253,9 @@ export default function MembersPage() {
           placeholder="Search by name or phone..."
           leftIcon={<Search className="w-4 h-4" />}
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setSearchTerm(e.target.value)
+          }
         />
       </div>
 
@@ -285,7 +280,7 @@ export default function MembersPage() {
                 </div>
                 <p className="text-xs text-gray-500">{m.phone}</p>
                 <p className="text-xs text-gray-400 mt-0.5">
-                  {m.sharesHeld} shares held
+                  Member since {m.joinedAt}
                 </p>
               </div>
             </div>
@@ -341,8 +336,8 @@ export default function MembersPage() {
       <div className="grid sm:grid-cols-4 gap-4">
         {[
           { label: "Active Members", value: activeMembers },
-          { label: "Total Shares", value: totalShares },
           { label: "Total Savings", value: formatCurrency(totalSaved) },
+          { label: "Total Loans", value: formatCurrency(totalLoaned) },
           {
             label: "Avg per Member",
             value: formatCurrency(

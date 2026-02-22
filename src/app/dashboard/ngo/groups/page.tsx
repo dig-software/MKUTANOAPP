@@ -143,7 +143,7 @@ export default function NGOGroupsPage() {
                   <span className="text-xs font-semibold text-gray-700">{formatCurrency(group.totalRepaid)} of {formatCurrency(group.totalFunded)}</span>
                 </div>
                 <div className="w-full bg-sand-100 rounded-full h-3 overflow-hidden">
-                  <div className="bg-forest-500 h-full transition-all" style={{ width: `${repaymentRate}%` } as React.CSSProperties} />
+                  <div className="bg-forest-500 h-full transition-all" style={{ width: `${repaymentRate}%` }} />
                 </div>
               </div>
 

@@ -91,7 +91,6 @@ CREATE TABLE IF NOT EXISTS groups (
   secretary_phone TEXT,
   member_count INT DEFAULT 0,
   
-  share_value DECIMAL(10,2) NOT NULL,
   currency CHAR(3) DEFAULT 'KES',
   meeting_frequency TEXT DEFAULT 'monthly',
   
@@ -134,8 +133,6 @@ CREATE TABLE IF NOT EXISTS members (
   national_id TEXT,
   email TEXT,
   
-  shares_held INT DEFAULT 0,
-  share_value DECIMAL(10,2),
   total_saved DECIMAL(15,2) DEFAULT 0,
   total_loaned DECIMAL(15,2) DEFAULT 0,
   total_repaid DECIMAL(15,2) DEFAULT 0,
@@ -221,9 +218,8 @@ CREATE TABLE IF NOT EXISTS contributions (
   member_id UUID NOT NULL REFERENCES members(id),
   member_name TEXT,
   
-  shares INT DEFAULT 0,
   amount DECIMAL(15,2) NOT NULL,
-  contribution_type TEXT DEFAULT 'share' CHECK (contribution_type IN ('share', 'social_fund', 'fine', 'other')),
+  contribution_type TEXT DEFAULT 'contribution' CHECK (contribution_type IN ('contribution', 'social_fund', 'fine', 'other')),
   description TEXT,
   
   recorded_by UUID REFERENCES users(id),
@@ -616,7 +612,6 @@ SELECT
   m.id,
   m.name,
   m.group_id,
-  m.shares_held,
   m.total_saved,
   m.wallet_balance,
   COUNT(DISTINCT l.id) as active_loans,
@@ -624,7 +619,7 @@ SELECT
   m.status
 FROM members m
 LEFT JOIN loans l ON m.id = l.member_id AND l.status IN ('active', 'overdue')
-GROUP BY m.id, m.name, m.group_id, m.shares_held, m.total_saved, m.wallet_balance, m.status;
+GROUP BY m.id, m.name, m.group_id, m.total_saved, m.wallet_balance, m.status;
 
 -- =====================================================
 -- GRANTS (for Supabase Auth Integration)
@@ -656,7 +651,7 @@ BEGIN
   SET 
     total_saved = COALESCE((
       SELECT SUM(amount) FROM contributions 
-      WHERE member_id = NEW.member_id AND contribution_type = 'share'
+      WHERE member_id = NEW.member_id AND contribution_type = 'contribution'
     ), 0),
     wallet_balance = COALESCE((
       SELECT SUM(CASE 

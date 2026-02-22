@@ -28,7 +28,6 @@ export default function SignupPage() {
     village: "",
     district: "",
     country: "Kenya",
-    shareValue: "100",
     currency: "KES",
   });
 
@@ -74,7 +73,6 @@ export default function SignupPage() {
           village: form.village,
           district: form.district,
           country: form.country,
-          shareValue: Number(form.shareValue),
           currency: form.currency,
           secretaryId: userId,
           secretaryName: form.name,
@@ -271,17 +269,9 @@ export default function SignupPage() {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="label">Member Share Value</label>
-                      <input
-                        type="number"
-                        className="input-field"
-                        value={form.shareValue}
-                        onChange={e => setForm(f => ({ ...f, shareValue: e.target.value }))}
-                      />
-                    </div>
-                    <div>
                       <label className="label">Currency</label>
                       <select
+                        aria-label="Select currency"
                         className="input-field"
                         value={form.currency}
                         onChange={e => setForm(f => ({ ...f, currency: e.target.value }))}
@@ -328,8 +318,8 @@ export default function SignupPage() {
                       <p className="text-gray-900">{form.village}, {form.district}</p>
                     </div>
                     <div className="border-t border-sand-200 pt-4">
-                      <p className="text-gray-600 font-medium">Member Share Value</p>
-                      <p className="text-gray-900">{form.currency} {form.shareValue}</p>
+                      <p className="text-gray-600 font-medium">Currency</p>
+                      <p className="text-gray-900">{form.currency}</p>
                     </div>
                   </div>
 

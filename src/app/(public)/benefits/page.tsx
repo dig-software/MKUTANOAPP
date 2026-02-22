@@ -16,7 +16,7 @@ const benefitSections = [
     borderColor: "border-forest-200",
     benefits: [
       { title: "Open & close sessions in under 2 minutes", desc: "A guided session flow walks you through every step — attendance, contributions, loans, repayments — so nothing is missed." },
-      { title: "Zero manual arithmetic", desc: "Share totals, loan balances, and fund running totals are all calculated instantly and accurately." },
+      { title: "Zero manual arithmetic", desc: "Savings totals, loan balances, and fund running totals are all calculated instantly and accurately." },
       { title: "Dispute-prevention confirmation screen", desc: "Before confirming, every entry is displayed for the whole group to verify. No more arguments after the meeting." },
       { title: "Works offline in any village", desc: "No internet? The app keeps working. Data saves locally and syncs the moment you're back online." },
       { title: "One-click meeting report PDF", desc: "Download a professional meeting summary to share with members, post on the noticeboard, or send to NGO partners." },
@@ -34,7 +34,7 @@ const benefitSections = [
     accentColor: "text-earth-700",
     borderColor: "border-earth-200",
     benefits: [
-      { title: "Your personal savings wallet", desc: "See your share count, total contributions this cycle, wallet balance, and savings history at a glance." },
+      { title: "Your personal savings wallet", desc: "See your total contributions this cycle, wallet balance, and savings history at a glance." },
       { title: "Live loan tracking", desc: "Know your outstanding loan balance, next repayment amount, and due date without asking the secretary." },
       { title: "Meeting notifications", desc: "Get reminders for upcoming meetings, overdue repayments, and when a new report is available." },
       { title: "Full contribution history", desc: "Scroll through every meeting you've attended, every shilling you've contributed, and every loan you've taken." },

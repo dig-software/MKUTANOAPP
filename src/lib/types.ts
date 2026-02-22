@@ -30,7 +30,6 @@ export interface Group {
   createdAt: string;
   cycleStartDate: string;
   cycleEndDate: string;
-  shareValue: number;
   currency: string;
   joinCode: string;
   isActive: boolean;
@@ -43,7 +42,6 @@ export interface Member {
   name: string;
   phone: string;
   nationalId?: string;
-  sharesHeld: number;
   totalSaved: number;
   totalLoaned: number;
   totalRepaid: number;
@@ -76,9 +74,8 @@ export interface Contribution {
   groupId: string;
   memberId: string;
   memberName: string;
-  shares: number;
   amount: number;
-  type: "share" | "social_fund" | "fine" | "other";
+  type: "contribution" | "social_fund" | "fine" | "other";
   recordedAt: string;
   recordedBy: string;
   confirmed: boolean;

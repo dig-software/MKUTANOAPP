@@ -17,7 +17,7 @@ export default function NewMeetingPage() {
     sessionNumber: "26",
   });
   const [attendance, setAttendance] = useState<Record<string, boolean>>({});
-  const [contributions, setContributions] = useState<Record<string, { shares: number; amount: number }>>({});
+  const [contributions, setContributions] = useState<Record<string, { amount: number }>>({});
 
   const next = () => setStep(s => s + 1);
   const back = () => setStep(s => s - 1);
@@ -117,7 +117,7 @@ export default function NewMeetingPage() {
       {step === 3 && (
         <Card>
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Record Contributions</h2>
-          <p className="text-sm text-gray-500 mb-4">Enter shares for each member. Amount is calculated automatically (KES 100/share).</p>
+          <p className="text-sm text-gray-500 mb-4">Enter the contribution amount for each member.</p>
           <div className="space-y-3 max-h-96 overflow-y-auto">
             {mockMembers.filter(m => attendance[m.id]).map((m) => (
               <div key={m.id} className="flex items-center gap-3 p-3 bg-sand-50 rounded-xl">
@@ -131,14 +131,13 @@ export default function NewMeetingPage() {
                   type="number"
                   placeholder="0"
                   min="0"
-                  className="w-20 px-3 py-2 text-center rounded-lg border border-sand-200 focus:ring-2 focus:ring-forest-400 focus:border-transparent"
-                  value={contributions[m.id]?.shares || ""}
+                  className="w-28 px-3 py-2 text-center rounded-lg border border-sand-200 focus:ring-2 focus:ring-forest-400 focus:border-transparent"
+                  value={contributions[m.id]?.amount || ""}
                   onChange={e => {
-                    const shares = parseInt(e.target.value) || 0;
-                    setContributions(c => ({ ...c, [m.id]: { shares, amount: shares * 100 } }));
+                    const amount = parseInt(e.target.value) || 0;
+                    setContributions(c => ({ ...c, [m.id]: { amount } }));
                   }}
                 />
-                <span className="text-xs text-gray-500 w-12">shares</span>
                 <span className="text-sm font-bold text-forest-700 w-24 text-right">
                   {formatCurrency(contributions[m.id]?.amount || 0)}
                 </span>
@@ -190,7 +189,7 @@ export default function NewMeetingPage() {
                 {formatCurrency(Object.values(contributions).reduce((s, c) => s + c.amount, 0))}
               </p>
               <p className="text-xs text-gray-600 mt-1">
-                {Object.values(contributions).reduce((s, c) => s + c.shares, 0)} total shares from {Object.values(attendance).filter(Boolean).length} members
+                {Object.values(attendance).filter(Boolean).length} members contributed
               </p>
             </div>
 

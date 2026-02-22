@@ -2,12 +2,12 @@
 import { Badge } from "@/components/ui/Badge";
 import { mockContributions } from "@/lib/mockData";
 import { formatCurrency, formatDateTime } from "@/lib/utils";
-import { DollarSign, TrendingUp, Hash } from "lucide-react";
+import { DollarSign, TrendingUp, List } from "lucide-react";
 
 export default function ContributionsPage() {
   const stats = {
     total: mockContributions.reduce((s, c) => s + c.amount, 0),
-    shares: mockContributions.reduce((s, c) => s + c.shares, 0),
+    entries: mockContributions.length,
     confirmed: mockContributions.filter(c => c.confirmed).length,
   };
 
@@ -34,11 +34,11 @@ export default function ContributionsPage() {
         <div className="stat-card">
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-500">Total Shares</p>
-              <p className="text-2xl font-bold text-earth-700 mt-1 font-display">{stats.shares}</p>
+              <p className="text-sm font-medium text-gray-500">Total Entries</p>
+              <p className="text-2xl font-bold text-earth-700 mt-1 font-display">{stats.entries}</p>
             </div>
             <div className="p-3 rounded-xl bg-earth-100">
-              <Hash className="w-5 h-5 text-earth-600" />
+              <List className="w-5 h-5 text-earth-600" />
             </div>
           </div>
         </div>
@@ -63,7 +63,6 @@ export default function ContributionsPage() {
               <tr>
                 <th className="table-header text-left">Member</th>
                 <th className="table-header text-left">Type</th>
-                <th className="table-header text-right">Shares</th>
                 <th className="table-header text-right">Amount</th>
                 <th className="table-header text-left">Recorded At</th>
                 <th className="table-header text-center">Status</th>
@@ -78,7 +77,6 @@ export default function ContributionsPage() {
                   <td className="table-cell">
                     <span className="badge-gray capitalize">{c.type.replace("_", " ")}</span>
                   </td>
-                  <td className="table-cell text-right font-semibold text-gray-900">{c.shares}</td>
                   <td className="table-cell text-right font-semibold text-forest-700">
                     {formatCurrency(c.amount)}
                   </td>

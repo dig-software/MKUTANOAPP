@@ -37,7 +37,7 @@ export default function MemberWalletPage() {
           value={formatCurrency(member.totalSaved)}
           icon={<PiggyBank className="w-5 h-5 text-forest-600" />}
           iconBg="bg-forest-100"
-          subtitle={`${member.sharesHeld} shares held`}
+          subtitle="Lifetime savings"
         />
         <StatCard
           title="Wallet Balance"
@@ -92,7 +92,6 @@ export default function MemberWalletPage() {
             <thead>
               <tr className="border-b border-sand-100">
                 <th className="table-header">Meeting</th>
-                <th className="table-header">Shares</th>
                 <th className="table-header">Amount</th>
                 <th className="table-header">Type</th>
                 <th className="table-header">Status</th>
@@ -104,7 +103,6 @@ export default function MemberWalletPage() {
                 return (
                   <tr key={c.id}>
                     <td className="table-cell">Session #{meeting?.sessionNumber}</td>
-                    <td className="table-cell">{c.shares}</td>
                     <td className="table-cell font-semibold">{formatCurrency(c.amount)}</td>
                     <td className="table-cell capitalize">{c.type.replace("_", " ")}</td>
                     <td className="table-cell">
@@ -124,12 +122,12 @@ export default function MemberWalletPage() {
           <h3 className="text-sm font-semibold text-gray-700 mb-4">Savings Progress This Cycle</h3>
           <div className="space-y-3">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-gray-600">Target (20 shares)</span>
-              <span className="font-semibold">{formatCurrency(2000)}</span>
+              <span className="text-gray-600">Target (KES 20,000)</span>
+              <span className="font-semibold">{formatCurrency(20000)}</span>
             </div>
-            <progress className="progress-bar progress-bar-lg" value={(member.sharesHeld / 20) * 100} max={100} />
+            <progress className="progress-bar progress-bar-lg" value={(member.totalSaved / 20000) * 100} max={100} />
             <div className="flex items-center justify-between text-sm">
-              <span className="text-gray-600">Current ({member.sharesHeld} shares)</span>
+              <span className="text-gray-600">Current savings</span>
               <span className="font-bold text-forest-700">{formatCurrency(member.totalSaved)}</span>
             </div>
           </div>

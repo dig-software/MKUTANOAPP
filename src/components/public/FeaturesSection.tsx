@@ -6,7 +6,7 @@ import {
 const features = [
   { icon: ClipboardList, color: "bg-forest-100 text-forest-600", title: "Meeting Session Manager", desc: "Open a session, record attendance, track every shilling contributed per member in real time." },
   { icon: WifiOff, color: "bg-earth-100 text-earth-600", title: "Offline-First Capture", desc: "No internet? No problem. Capture all data offline and sync automatically when connectivity returns." },
-  { icon: Wallet, color: "bg-terra-100 text-terra-600", title: "Member Savings Wallets", desc: "Each member has a live wallet showing their shares held, savings total, and outstanding loans." },
+  { icon: Wallet, color: "bg-terra-100 text-terra-600", title: "Member Savings Wallets", desc: "Each member has a live wallet showing their savings total and outstanding loans." },
   { icon: FileText, color: "bg-forest-100 text-forest-600", title: "Loan Issuance & Tracking", desc: "Record loan disbursements, terms, and purposes. Track repayments session by session." },
   { icon: ShieldAlert, color: "bg-earth-100 text-earth-600", title: "Dispute Prevention Screen", desc: "A confirmation screen shows totals per member before finalizing — reducing errors and disputes." },
   { icon: PieChart, color: "bg-terra-100 text-terra-600", title: "Auto Financial Reports", desc: "Generate meeting summaries, monthly statements, and cycle-end reports automatically. Download as PDF." },

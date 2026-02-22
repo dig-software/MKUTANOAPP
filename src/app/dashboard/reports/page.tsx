@@ -16,7 +16,7 @@ const templates = [
   { icon: "📄", name: "Meeting Summary", desc: "Attendance, contributions, loans, repayments" },
   { icon: "📊", name: "Monthly Financial Report", desc: "All transactions for the selected month" },
   { icon: "👥", name: "Member Statement", desc: "Individual member savings and loan history" },
-  { icon: "📈", name: "Annual Cycle Report", desc: "Full cycle summary with profit share" },
+  { icon: "📈", name: "Annual Cycle Report", desc: "Full cycle summary with profit distribution" },
   { icon: "🏦", name: "Loan Portfolio Report", desc: "All active and repaid loans" },
   { icon: "⚠️", name: "Overdue Loans Report", desc: "List of all overdue loans and balances" },
 ];

@@ -39,7 +39,7 @@ export default function DashboardPage() {
             value={formatCurrency(member.totalSaved)}
             icon={<PiggyBank className="w-5 h-5 text-forest-600" />}
             iconBg="bg-forest-100"
-            subtitle={`${member.sharesHeld} shares held`}
+            subtitle="Lifetime savings"
           />
           <StatCard
             title="Wallet Balance"
@@ -649,7 +649,7 @@ export default function DashboardPage() {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold text-gray-900 truncate">{m.name}</p>
-                <p className="text-xs text-gray-500">{m.sharesHeld} shares</p>
+                <p className="text-xs text-gray-500">Total saved</p>
               </div>
               <div className="text-right">
                 <p className="text-sm font-bold text-forest-700">{formatCurrency(m.totalSaved)}</p>

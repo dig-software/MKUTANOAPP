@@ -1,16 +1,16 @@
 import Link from "next/link";
 import { ArrowRight, ShieldCheck, WifiOff, Users } from "lucide-react";
 
-export default function HeroSection() {
+export function HeroSection() {
   return (
-    <section className="relative gradient-hero overflow-hidden">
-      {/* Decorative blobs */}
+    <section className="relative overflow-hidden pt-16 sm:pt-24 lg:pt-32 pb-16 sm:pb-24 lg:pb-32">
+      {/* Background blobs */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-forest-200/40 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-earth-200/40 rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Text */}
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {/* Left content */}
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-forest-100 text-forest-700 rounded-full text-sm font-semibold mb-6">
               <span className="w-2 h-2 bg-forest-500 rounded-full animate-pulse" />
@@ -33,10 +33,9 @@ export default function HeroSection() {
               </Link>
             </div>
 
-            {/* Trust badges */}
-            <div className="mt-10 flex flex-wrap gap-5">
+            {/* Features list */}
+            <div className="mt-10 space-y-3">
               {[
-                { icon: ShieldCheck, label: "Encrypted & Secure" },
                 { icon: WifiOff, label: "Works Offline" },
                 { icon: Users, label: "18+ Members Per Group" },
               ].map(({ icon: Icon, label }) => (
@@ -48,10 +47,9 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* Dashboard preview card */}
+          {/* Right card demo */}
           <div className="relative">
-            <div className="bg-white rounded-3xl shadow-2xl border border-sand-100 overflow-hidden">
-              {/* Fake top bar */}
+            <div className="rounded-3xl shadow-2xl overflow-hidden bg-white border border-sand-200">
               <div className="bg-forest-700 px-5 py-3 flex items-center gap-3">
                 <div className="flex gap-1.5">
                   {["bg-terra-400", "bg-earth-400", "bg-forest-400"].map((c, i) => (
@@ -76,9 +74,9 @@ export default function HeroSection() {
                 {/* Mini member list */}
                 <div className="space-y-2">
                   {[
-                    { name: "Mary Achieng", shares: 5, amount: "KES 500", done: true },
-                    { name: "Alice Njeri", shares: 7, amount: "KES 700", done: true },
-                    { name: "Christine Mwangi", shares: 4, amount: "KES 400", done: false },
+                    { name: "Mary Achieng", amount: "KES 500", done: true },
+                    { name: "Alice Njeri", amount: "KES 700", done: true },
+                    { name: "Christine Mwangi", amount: "KES 400", done: false },
                   ].map((m) => (
                     <div key={m.name} className="flex items-center gap-3 p-3 rounded-xl bg-sand-50 border border-sand-100">
                       <div className="w-8 h-8 bg-earth-200 rounded-full flex items-center justify-center text-xs font-bold text-earth-700">
@@ -86,7 +84,7 @@ export default function HeroSection() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-semibold text-gray-900 truncate">{m.name}</p>
-                        <p className="text-xs text-gray-500">{m.shares} shares</p>
+                        <p className="text-xs text-gray-500">Contribution recorded</p>
                       </div>
                       <div className="text-right">
                         <p className="text-sm font-bold text-gray-900">{m.amount}</p>

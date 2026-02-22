@@ -233,6 +233,7 @@ export default function SystemSettingsPage() {
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
                   type="checkbox"
+                  aria-label="Demo Mode toggle"
                   checked={demoModeEnabled}
                   onChange={(e) => {
                     setDemoModeEnabled(e.target.checked);
@@ -252,6 +253,7 @@ export default function SystemSettingsPage() {
             <label className="relative inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
+                aria-label="Maintenance Mode toggle"
                 checked={settings.maintenanceMode}
                 onChange={(e) => setSettings({ ...settings, maintenanceMode: e.target.checked })}
                 className="sr-only peer"
@@ -267,6 +269,7 @@ export default function SystemSettingsPage() {
             <label className="relative inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
+                aria-label="Push Notifications toggle"
                 checked={settings.enableNotifications}
                 onChange={(e) => setSettings({ ...settings, enableNotifications: e.target.checked })}
                 className="sr-only peer"
@@ -282,6 +285,7 @@ export default function SystemSettingsPage() {
             <label className="relative inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
+                aria-label="Offline Sync toggle"
                 checked={settings.enableOfflineSync}
                 onChange={(e) => setSettings({ ...settings, enableOfflineSync: e.target.checked })}
                 className="sr-only peer"
