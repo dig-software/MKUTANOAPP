@@ -164,3 +164,121 @@ export const mockChartData: ChartDataPoint[] = [
   { month: "Feb", savings: 18500, loans: 12000, repayments: 9750 },
   { month: "Mar", savings: 14200, loans: 8000, repayments: 5500 },
 ];
+
+// NGO & MFI Mock Data
+export const mockNgoPrograms = [
+  {
+    id: "prog_1",
+    name: "Women Entrepreneurs Fund 2026",
+    ngoId: "ngo_maendeleo",
+    ngoName: "Maendeleo Foundation",
+    totalAmount: 500000,
+    allocatedAmount: 350000,
+    releaseToMfis: [
+      { mfiId: "mfi_ulinzi", mfiName: "Ulinzi MFI", amount: 200000, relationshipDate: "2026-01-15", status: "active" },
+      { mfiId: "mfi_ashima", mfiName: "Ashima Microfinance", amount: 150000, relationshipDate: "2026-02-01", status: "active" },
+    ],
+    startDate: "2026-01-01",
+    endDate: "2026-12-31",
+    description: "Funding for women-led micro and small enterprises across Kenya and Uganda",
+    status: "active",
+  },
+];
+
+export const mockMfiLendingPortfolio = {
+  mfiId: "mfi_ulinzi",
+  mfiName: "Ulinzi MFI for MSMEs",
+  totalFundingReceived: 200000,
+  activeLoans: 45,
+  totalLoansIssued: 180000,
+  totalRepaid: 165000,
+  defaultRate: 0.08,
+  lendingGroups: [
+    {
+      id: "group_mkutano_1",
+      name: "Maendeleo wa Wanawake",
+      groupId: "g1",
+      fundingAmount: 50000,
+      loansIssuedCount: 12,
+      totalLoansIssued: 45000,
+      avgRepaymentRate: 0.94,
+      status: "active",
+    },
+    {
+      id: "group_shoprite_1",
+      name: "Shoprite Women Traders Group",
+      groupId: "g_shoprite",
+      fundingAmount: 35000,
+      loansIssuedCount: 9,
+      totalLoansIssued: 32000,
+      avgRepaymentRate: 0.91,
+      status: "active",
+    },
+    {
+      id: "group_jua_1",
+      name: "Jua Kali Artisans Collective",
+      groupId: "g_jua",
+      fundingAmount: 45000,
+      loansIssuedCount: 14,
+      totalLoansIssued: 41000,
+      avgRepaymentRate: 0.96,
+      status: "active",
+    },
+  ],
+  performanceMetrics: {
+    totalDisbursements: 180000,
+    totalRepaid: 165000,
+    outstandingBalance: 15000,
+    avgInterestRate: 0.18,
+    avgLoanSize: 4000,
+    avgLoanTerm: 12,
+  },
+};
+
+export const mockMfiTransactions = [
+  {
+    id: "tx_1",
+    type: "funding_received",
+    description: "Fund received from Maendeleo Foundation",
+    amount: 200000,
+    date: "2026-01-15",
+    status: "completed",
+    relatedId: "prog_1",
+  },
+  {
+    id: "tx_2",
+    type: "loan_disbursed",
+    description: "Loan disbursed to Maendeleo wa Wanawake group",
+    amount: 45000,
+    date: "2026-01-20",
+    status: "completed",
+    relatedId: "group_mkutano_1",
+  },
+  {
+    id: "tx_3",
+    type: "repayment_received",
+    description: "Repayments from group lending cycles",
+    amount: 38500,
+    date: "2026-02-15",
+    status: "completed",
+    relatedId: "group_mkutano_1",
+  },
+  {
+    id: "tx_4",
+    type: "loan_disbursed",
+    description: "Loan disbursed to Jua Kali Artisans",
+    amount: 41000,
+    date: "2026-01-25",
+    status: "completed",
+    relatedId: "group_jua_1",
+  },
+  {
+    id: "tx_5",
+    type: "repayment_received",
+    description: "Repayments from Jua Kali group performance",
+    amount: 39500,
+    date: "2026-02-18",
+    status: "completed",
+    relatedId: "group_jua_1",
+  },
+];

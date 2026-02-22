@@ -98,6 +98,29 @@ export default function LoginPage() {
           <p className="text-gray-500 text-sm mt-1">Sign in to your account</p>
         </div>
 
+        {/* Enterprise Links */}
+        <div className="grid grid-cols-2 gap-3 mb-6">
+          <Link href="/enterprise/ngo-login" className="p-3 rounded-lg border-2 border-forest-100 hover:border-forest-300 hover:bg-forest-50 transition text-center">
+            <div className="text-lg mb-1">🏢</div>
+            <p className="text-xs font-semibold text-gray-900">NGO Portal</p>
+            <p className="text-xs text-gray-500">Programs & Funding</p>
+          </Link>
+          <Link href="/enterprise/mfi-login" className="p-3 rounded-lg border-2 border-earth-100 hover:border-earth-300 hover:bg-earth-50 transition text-center">
+            <div className="text-lg mb-1">💼</div>
+            <p className="text-xs font-semibold text-gray-900">MFI Portal</p>
+            <p className="text-xs text-gray-500">Lending & Portfolio</p>
+          </Link>
+        </div>
+
+        <div className="relative mb-6">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-sand-200"></div>
+          </div>
+          <div className="relative flex justify-center text-xs">
+            <span className="px-2 bg-sand-50 text-gray-500">Community & Groups</span>
+          </div>
+        </div>
+
         <div className="card">
           {/* Login Type Toggle */}
           <div className="mb-6 grid grid-cols-2 gap-2 bg-sand-100 rounded-lg p-1">
