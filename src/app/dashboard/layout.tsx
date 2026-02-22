@@ -23,7 +23,7 @@ const navSections = {
     { icon: Settings, label: "Settings", href: "/dashboard/settings" },
   ],
   member: [
-    { icon: Wallet, label: "My Wallet", href: "/dashboard" },
+    { icon: Wallet, label: "My Wallet", href: "/dashboard/wallet" },
     { icon: FileText, label: "My Contributions", href: "/dashboard/my-contributions" },
     { icon: FileText, label: "My Loans", href: "/dashboard/my-loans" },
     { icon: Calendar, label: "Meeting History", href: "/dashboard/meeting-history" },

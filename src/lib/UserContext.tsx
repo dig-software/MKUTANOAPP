@@ -19,17 +19,26 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     const initializeAuth = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
-        
+
         if (session?.user) {
-          // Fetch user profile from database
           const { data: profile, error } = await supabase
             .from('users')
             .select('*')
             .eq('id', session.user.id)
             .single();
-          
+
           if (profile && !error) {
             setCurrentUser(profile as User);
+          }
+        } else if (typeof window !== 'undefined') {
+          const storedUser = localStorage.getItem('currentUser');
+          if (storedUser) {
+            try {
+              setCurrentUser(JSON.parse(storedUser) as User);
+            } catch (parseError) {
+              console.error('Failed to parse stored user', parseError);
+              localStorage.removeItem('currentUser');
+            }
           }
         }
       } catch (error) {
@@ -53,7 +62,17 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
           if (profile) {
             setCurrentUser(profile as User);
           }
-        } else {
+        } else if (typeof window !== 'undefined') {
+          const storedUser = localStorage.getItem('currentUser');
+          if (storedUser) {
+            try {
+              setCurrentUser(JSON.parse(storedUser) as User);
+              return;
+            } catch (parseError) {
+              console.error('Failed to parse stored user', parseError);
+              localStorage.removeItem('currentUser');
+            }
+          }
           setCurrentUser(null);
         }
       }

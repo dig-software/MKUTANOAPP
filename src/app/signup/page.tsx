@@ -146,7 +146,7 @@ export default function SignupPage() {
               <div className="flex-1">
                 <h3 className="font-semibold text-forest-900 mb-2">✓ Group Created Successfully!</h3>
                 <p className="text-forest-800 text-sm mb-4">
-                  <strong>{groupName}</strong> is ready. Your members will use this code to access:
+                  <strong>{groupName}</strong> is ready. Save this code for your group records:
                 </p>
                 <div className="bg-white rounded-lg p-4 font-mono text-lg font-bold text-center text-forest-600 border-2 border-dashed border-forest-300 mb-3">
                   {groupCode}
@@ -159,7 +159,7 @@ export default function SignupPage() {
                   {copied ? "Copied!" : "Copy code"}
                 </button>
                 <p className="text-forest-700 text-sm mt-4">
-                  Next: Add member phone numbers to invite them. Members will receive SMS notification to set their password.
+                  Next: Add member phone numbers in your dashboard. Members will sign in with their phone number once created.
                 </p>
               </div>
             </div>

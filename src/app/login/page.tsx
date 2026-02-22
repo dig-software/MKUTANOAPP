@@ -6,6 +6,7 @@ import { Leaf, Eye, EyeOff, Lock, Phone } from "lucide-react";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import { supabase } from "@/lib/supabase";
+import { getUserByPhone, mockUser } from "@/lib/mockData";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -20,14 +21,28 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
 
+    const getRedirectPath = (role?: string) =>
+      role === "member" ? "/dashboard/wallet" : "/dashboard";
+
     try {
+      if (loginType === "phone") {
+        const demoUser = getUserByPhone(form.credential);
+        if (demoUser) {
+          localStorage.setItem("currentUser", JSON.stringify(demoUser));
+          router.push(getRedirectPath(demoUser.role));
+          return;
+        }
+      }
+
+      if (loginType === "email" && form.credential.toLowerCase() === mockUser.email?.toLowerCase()) {
+        localStorage.setItem("currentUser", JSON.stringify(mockUser));
+        router.push(getRedirectPath(mockUser.role));
+        return;
+      }
+
       let emailToUse = form.credential;
 
-      // If login via phone, convert to email format for lookup
       if (loginType === "phone") {
-        // For demo: convert phone to a predictable email pattern OR fetch from database
-        // For now, we'll try phone as-is and let backend handle it
-        // In production, you'd query the users table by phone number
         const { data: userData, error: lookupError } = await supabase
           .from("users")
           .select("email")
@@ -43,7 +58,6 @@ export default function LoginPage() {
         emailToUse = userData.email;
       }
 
-      // Sign in with Supabase using email
       const { data, error: signInError } = await supabase.auth.signInWithPassword({
         email: emailToUse,
         password: form.password,
@@ -56,7 +70,12 @@ export default function LoginPage() {
       }
 
       if (data.user) {
-        router.push("/dashboard");
+        const { data: profile } = await supabase
+          .from("users")
+          .select("role")
+          .eq("id", data.user.id)
+          .single();
+        router.push(getRedirectPath(profile?.role));
       }
     } catch (err: any) {
       setError(err.message || "Login failed");
@@ -76,7 +95,7 @@ export default function LoginPage() {
             <span className="text-2xl font-display font-bold text-gray-900">Mkutano</span>
           </Link>
           <h1 className="text-2xl font-semibold text-gray-900 mt-6">Welcome back</h1>
-          <p className="text-gray-500 text-sm mt-1">Sign in to your group dashboard</p>
+          <p className="text-gray-500 text-sm mt-1">Sign in to your account</p>
         </div>
 
         <div className="card">
@@ -143,16 +162,17 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          {/* Demo credentials */}
           <div className="mt-5 p-3 bg-earth-50 rounded-xl text-xs text-earth-700 border border-earth-100">
             <p className="font-semibold mb-2">🔑 Demo Accounts (Community Edition):</p>
             <div className="space-y-1 font-mono text-xs">
-              <p><strong>Secretary:</strong> Email: grace@demo.com | Pass: demo123</p>
-              <p><strong>Member (via phone):</strong> +254711000001 | Pass: demo123</p>
-              <p><strong>Member (via phone):</strong> +254711000002 | Pass: demo123</p>
+              <p><strong>Secretary (email):</strong> grace@maendeleo.ke</p>
+              <p><strong>Admin (phone):</strong> +254700000001</p>
+              <p><strong>NGO/MFI (phone):</strong> +254700000002</p>
+              <p><strong>Member (phone):</strong> +254711000001</p>
+              <p><strong>Member (phone):</strong> +254711000002</p>
               <hr className="border-earth-200 my-2" />
               <p className="text-xs">
-                Members sign in with their <strong>phone number</strong>. Secretary signs in with <strong>email</strong>.
+                Demo logins use the mock data list; password is not required for mock accounts.
               </p>
             </div>
           </div>

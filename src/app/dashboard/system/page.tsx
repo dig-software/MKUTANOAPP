@@ -4,9 +4,12 @@ import { Badge } from "@/components/ui/Badge";
 import { Settings, Database, Shield, Mail, Bell, Zap, Save, RotateCcw, AlertCircle, CheckCircle } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useCurrentUser } from "@/lib/UserContext";
+import { isDemoModeAllowed, isDemoModeEnabled, setDemoModeEnabled } from "@/lib/demoMode";
 
 export default function SystemSettingsPage() {
+  const { currentUser } = useCurrentUser();
   const [settings, setSettings] = useState({
     platformName: "Mkutano",
     supportEmail: "support@mkutano.app",
@@ -22,6 +25,13 @@ export default function SystemSettingsPage() {
   });
 
   const [saved, setSaved] = useState(false);
+  const [demoModeAllowed, setDemoModeAllowed] = useState(false);
+  const [demoModeEnabled, setDemoModeEnabledState] = useState(false);
+
+  useEffect(() => {
+    setDemoModeAllowed(isDemoModeAllowed());
+    setDemoModeEnabledState(isDemoModeEnabled());
+  }, []);
 
   const handleSave = () => {
     setSaved(true);
@@ -214,6 +224,26 @@ export default function SystemSettingsPage() {
           Feature Toggles
         </h2>
         <div className="space-y-3">
+          {demoModeAllowed && currentUser?.role === "admin" && (
+            <div className="flex items-center justify-between p-3 bg-forest-50 rounded-lg border border-forest-200">
+              <div>
+                <p className="font-semibold text-gray-900">Demo Mode</p>
+                <p className="text-sm text-gray-600">Force mock data for demos and pitches</p>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={demoModeEnabled}
+                  onChange={(e) => {
+                    setDemoModeEnabled(e.target.checked);
+                    setDemoModeEnabledState(e.target.checked);
+                  }}
+                  className="sr-only peer"
+                />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-forest-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forest-600" />
+              </label>
+            </div>
+          )}
           <div className="flex items-center justify-between p-3 bg-sand-50 rounded-lg">
             <div>
               <p className="font-semibold text-gray-900">Maintenance Mode</p>
