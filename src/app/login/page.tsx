@@ -165,14 +165,14 @@ export default function LoginPage() {
           <div className="mt-5 p-3 bg-earth-50 rounded-xl text-xs text-earth-700 border border-earth-100">
             <p className="font-semibold mb-2">🔑 Demo Accounts (Community Edition):</p>
             <div className="space-y-1 font-mono text-xs">
-              <p><strong>Secretary (email):</strong> grace@maendeleo.ke</p>
+              <p><strong>Secretary:</strong> grace@maendeleo.ke | demo123</p>
               <p><strong>Admin (phone):</strong> +254700000001</p>
               <p><strong>NGO/MFI (phone):</strong> +254700000002</p>
               <p><strong>Member (phone):</strong> +254711000001</p>
               <p><strong>Member (phone):</strong> +254711000002</p>
               <hr className="border-earth-200 my-2" />
               <p className="text-xs">
-                Demo logins use the mock data list; password is not required for mock accounts.
+                Secretary uses email + password. Others sign in with phone only.
               </p>
             </div>
           </div>
