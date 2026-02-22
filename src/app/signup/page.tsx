@@ -5,10 +5,7 @@ import { useRouter } from "next/navigation";
 import { Leaf, Check } from "lucide-react";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
-import {
-  createSecretaryAccount,
-  joinGroupWithCode,
-} from "@/lib/accountManager";
+import { supabase } from "@/lib/supabase";
 
 const steps = ["Account Type", "Personal Details", "Group Setup", "Confirm"];
 
@@ -16,6 +13,7 @@ export default function SignupPage() {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [form, setForm] = useState({
     role: "secretary",
     name: "",
@@ -36,67 +34,120 @@ export default function SignupPage() {
 
   const handleSubmit = async () => {
     setLoading(true);
+    setError("");
 
     try {
+      // 1. Create auth account
+      const { data: authData, error: signupError } = await supabase.auth.signUp({
+        email: form.email,
+        password: form.password,
+      });
+
+      if (signupError) throw signupError;
+      if (!authData.user) throw new Error("Failed to create user");
+
+      const userId = authData.user.id;
+
+      // 2. Create user profile
       if (form.role === "secretary") {
-        // Create secretary account with new group
-        const result = createSecretaryAccount({
-          name: form.name,
-          phone: form.phone,
-          email: form.email,
-          password: form.password,
-          groupName: form.groupName,
-          village: form.village,
-          district: form.district,
-          country: form.country,
-          shareValue: Number(form.shareValue),
-          currency: form.currency,
-        });
+        // Create group first
+        const { data: groupData, error: groupError } = await supabase
+          .from("groups")
+          .insert({
+            name: form.groupName,
+            village: form.village,
+            district: form.district,
+            country: form.country,
+            shareValue: Number(form.shareValue),
+            currency: form.currency,
+            secretaryId: userId,
+            secretaryName: form.name,
+            secretaryPhone: form.phone,
+            joinCode: `${form.groupName.slice(0, 3).toUpperCase()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`,
+          })
+          .select()
+          .single();
 
-        // Store user in context
-        localStorage.setItem("currentUser", JSON.stringify(result.user));
-        // Store group info
-        localStorage.setItem("currentGroup", JSON.stringify(result.group));
+        if (groupError) throw groupError;
+
+        // Create user profile linked to group
+        const { error: userError } = await supabase
+          .from("users")
+          .insert({
+            id: userId,
+            name: form.name,
+            email: form.email,
+            phone: form.phone,
+            role: "secretary",
+            groupId: groupData.id,
+            avatarInitials: form.name
+              .split(" ")
+              .map((n) => n[0])
+              .join("")
+              .toUpperCase()
+              .slice(0, 2),
+            isActive: true,
+          });
+
+        if (userError) throw userError;
       } else if (form.role === "member") {
-        // Member joins with code
-        const result = joinGroupWithCode({
-          name: form.name,
-          phone: form.phone,
-          password: form.password,
-          joinCode: form.groupName, // Using groupName field for code
-          nationalId: form.nationalId,
-        });
+        // Find group by join code
+        const { data: groups, error: groupError } = await supabase
+          .from("groups")
+          .select("id")
+          .eq("joinCode", form.groupName)
+          .single();
 
-        localStorage.setItem("currentUser", JSON.stringify(result.user));
-        localStorage.setItem("currentGroup", JSON.stringify(result.group));
-      }
+        if (groupError || !groups) throw new Error("Invalid group join code");
 
-      // Redirect based on role
-      if (form.role === "secretary" || form.role === "member") {
-        router.push("/dashboard");
+        // Create member profile
+        const { error: userError } = await supabase
+          .from("users")
+          .insert({
+            id: userId,
+            name: form.name,
+            email: form.email,
+            phone: form.phone,
+            role: "member",
+            groupId: groups.id,
+            nationalId: form.nationalId || null,
+            avatarInitials: form.name
+              .split(" ")
+              .map((n) => n[0])
+              .join("")
+              .toUpperCase()
+              .slice(0, 2),
+            isActive: true,
+          });
+
+        if (userError) throw userError;
       } else {
-        // NGO/Admin - just store and redirect
-        const user = {
-          id: `u_${Date.now()}`,
-          name: form.name,
-          phone: form.phone,
-          email: form.email,
-          role: form.role,
-          avatarInitials: form.name
-            .split(" ")
-            .map((n) => n[0])
-            .join("")
-            .toUpperCase()
-            .slice(0, 2),
-          joinedAt: new Date().toISOString().split("T")[0],
-          isActive: true,
-        };
-        localStorage.setItem("currentUser", JSON.stringify(user));
-        router.push("/dashboard");
+        // NGO/Admin user
+        const { error: userError } = await supabase
+          .from("users")
+          .insert({
+            id: userId,
+            name: form.name,
+            email: form.email,
+            phone: form.phone,
+            role: form.role,
+            avatarInitials: form.name
+              .split(" ")
+              .map((n) => n[0])
+              .join("")
+              .toUpperCase()
+              .slice(0, 2),
+            isActive: true,
+          });
+
+        if (userError) throw userError;
       }
+
+      // Redirect to dashboard
+      router.push("/dashboard");
     } catch (error: any) {
-      alert(error.message || "Failed to create account");
-      setLoading(false);
+      setError(error.message || "Failed to create account");
+      setLoading(false)
     }
   };
 

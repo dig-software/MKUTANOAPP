@@ -5,13 +5,13 @@ import { useRouter } from "next/navigation";
 import { Leaf, Eye, EyeOff, Lock, Phone } from "lucide-react";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
-import { getUserByPhone } from "@/lib/mockData";
+import { supabase } from "@/lib/supabase";
 
 export default function LoginPage() {
   const router = useRouter();
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({ phone: "", password: "" });
+  const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -19,22 +19,26 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
 
-    // Simulate auth - verify phone exists
-    const user = getUserByPhone(form.phone);
-    if (!user) {
-      setError("Phone number not found. See demo credentials below.");
+    try {
+      // Sign in with Supabase
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+        email: form.email,
+        password: form.password,
+      });
+
+      if (signInError) {
+        setError(signInError.message);
+        setLoading(false);
+        return;
+      }
+
+      if (data.user) {
+        router.push("/dashboard");
+      }
+    } catch (err: any) {
+      setError(err.message || "Login failed");
       setLoading(false);
-      return;
     }
-
-    // Store user in localStorage (for demo purposes)
-    localStorage.setItem("currentUser", JSON.stringify({ 
-      ...user,
-      phone: form.phone 
-    }));
-
-    await new Promise(r => setTimeout(r, 1200));
-    router.push("/dashboard");
   };
 
   return (
@@ -55,14 +59,14 @@ export default function LoginPage() {
         <div className="card">
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
-              label="Phone Number"
-              type="tel"
-              placeholder="+254 7XX XXX XXX"
+              label="Email"
+              type="email"
+              placeholder="your@email.com"
               required
-              leftIcon={<Phone className="w-4 h-4" />}
-              value={form.phone}
-              onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
-              error={error ? "Invalid phone number" : undefined}
+              leftIcon={<Lock className="w-4 h-4" />}
+              value={form.email}
+              onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+              error={error ? error : undefined}
             />
             <div>
               <label className="label">Password</label>

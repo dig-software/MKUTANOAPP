@@ -1,5 +1,6 @@
 'use client';
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { supabase } from './supabase';
 import { User } from './types';
 
 interface UserContextType {
@@ -12,30 +13,56 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export function UserProvider({ children }: { children: React.ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
-    if (typeof window !== 'undefined') {
+    // Check current session
+    const initializeAuth = async () => {
       try {
-        const storedUser = localStorage.getItem('currentUser');
-        if (storedUser) {
-          const user = JSON.parse(storedUser) as User;
-          setCurrentUser(user);
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (session?.user) {
+          // Fetch user profile from database
+          const { data: profile, error } = await supabase
+            .from('users')
+            .select('*')
+            .eq('id', session.user.id)
+            .single();
+          
+          if (profile && !error) {
+            setCurrentUser(profile as User);
+          }
         }
       } catch (error) {
-        console.error('Failed to parse stored user', error);
-        if (typeof window !== 'undefined') {
-          localStorage.removeItem('currentUser');
+        console.error('Auth initialization error:', error);
+      }
+      setIsLoading(false);
+    };
+
+    initializeAuth();
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (_event, session) => {
+        if (session?.user) {
+          const { data: profile } = await supabase
+            .from('users')
+            .select('*')
+            .eq('id', session.user.id)
+            .single();
+          
+          if (profile) {
+            setCurrentUser(profile as User);
+          }
+        } else {
+          setCurrentUser(null);
         }
       }
-    }
-    setIsLoading(false);
-  }, []);
+    );
 
-  if (!isMounted) {
-    return <>{children}</>;
-  }
+    return () => {
+      subscription?.unsubscribe();
+    };
+  }, []);
 
   return (
     <UserContext.Provider value={{ currentUser, isLoading }}>
