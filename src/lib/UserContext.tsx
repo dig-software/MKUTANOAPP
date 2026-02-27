@@ -21,6 +21,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         const { data: { session } } = await supabase.auth.getSession();
 
         if (session?.user) {
+          // Supabase session exists - try to fetch profile
           const { data: profile, error } = await supabase
             .from('users')
             .select('*')
@@ -30,8 +31,13 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
           if (profile && !error) {
             setCurrentUser(profile as User);
             localStorage.setItem('currentUser', JSON.stringify(profile));
+          } else {
+            // Supabase session exists but no profile found - clear
+            localStorage.removeItem('currentUser');
+            setCurrentUser(null);
           }
         } else if (typeof window !== 'undefined') {
+          // No Supabase session - check localStorage (for demo/mock login)
           const storedUser = localStorage.getItem('currentUser');
           if (storedUser) {
             try {
@@ -44,6 +50,8 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
           } else {
             setCurrentUser(null);
           }
+        } else {
+          setCurrentUser(null);
         }
       } catch (error) {
         console.error('Auth initialization error:', error);
@@ -77,10 +85,20 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
           localStorage.removeItem('currentUser');
           sessionStorage.clear();
           setCurrentUser(null);
-        } else if (!session) {
-          // No session and not explicitly signed out - clear user
-          localStorage.removeItem('currentUser');
-          setCurrentUser(null);
+        } else if (!session && event !== 'TOKEN_REFRESHED') {
+          // No session - try to use localStorage (for demo/mock login)
+          if (typeof window !== 'undefined') {
+            const storedUser = localStorage.getItem('currentUser');
+            if (storedUser) {
+              try {
+                setCurrentUser(JSON.parse(storedUser) as User);
+              } catch (e) {
+                console.error('Failed to parse stored user', e);
+                localStorage.removeItem('currentUser');
+                setCurrentUser(null);
+              }
+            }
+          }
         }
       }
     );

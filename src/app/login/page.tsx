@@ -19,14 +19,18 @@ export default function LoginPage() {
   // Clear any previous session data when login page loads
   useEffect(() => {
     const clearPreviousSession = async () => {
-      // Clear localStorage
-      localStorage.removeItem("currentUser");
-      
-      // Clear Supabase session
-      await supabase.auth.signOut({ scope: "local" });
-      
-      // Clear sessionStorage as well
-      sessionStorage.clear();
+      // Only clear if we came from dashboard/logout, not on initial page load
+      const referrer = document.referrer;
+      if (referrer.includes('/dashboard') || referrer.includes('/login')) {
+        // Clear localStorage
+        localStorage.removeItem("currentUser");
+        
+        // Clear Supabase session
+        await supabase.auth.signOut({ scope: "local" });
+        
+        // Clear sessionStorage as well
+        sessionStorage.clear();
+      }
     };
     
     clearPreviousSession();
@@ -45,6 +49,8 @@ export default function LoginPage() {
         const demoUser = getUserByPhone(form.credential);
         if (demoUser) {
           localStorage.setItem("currentUser", JSON.stringify(demoUser));
+          // Give UserContext time to pick up the change
+          await new Promise(resolve => setTimeout(resolve, 100));
           router.push(getRedirectPath(demoUser.role));
           return;
         }
@@ -52,6 +58,8 @@ export default function LoginPage() {
 
       if (loginType === "email" && form.credential.toLowerCase() === mockUser.email?.toLowerCase()) {
         localStorage.setItem("currentUser", JSON.stringify(mockUser));
+        // Give UserContext time to pick up the change
+        await new Promise(resolve => setTimeout(resolve, 100));
         router.push(getRedirectPath(mockUser.role));
         return;
       }
@@ -91,6 +99,8 @@ export default function LoginPage() {
           .select("role")
           .eq("id", data.user.id)
           .single();
+        // Give UserContext time to pick up the Supabase session
+        await new Promise(resolve => setTimeout(resolve, 100));
         router.push(getRedirectPath(profile?.role));
       }
     } catch (err: any) {
