@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Leaf, Eye, EyeOff, Lock, Phone } from "lucide-react";
@@ -16,21 +16,6 @@ export default function LoginPage() {
   const [form, setForm] = useState({ credential: "", password: "" });
   const [error, setError] = useState("");
 
-  // Clear Supabase session when login page loads (not localStorage - that might be from a previous login)
-  useEffect(() => {
-    const clearSupabaseSession = async () => {
-      try {
-        // Clear Supabase session to start fresh, but don't touch localStorage
-        // localStorage will be properly set during login
-        await supabase.auth.signOut({ scope: "local" });
-      } catch (error) {
-        console.error('Error clearing Supabase session:', error);
-      }
-    };
-    
-    clearSupabaseSession();
-  }, []);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -44,8 +29,8 @@ export default function LoginPage() {
         const demoUser = getUserByPhone(form.credential);
         if (demoUser) {
           localStorage.setItem("currentUser", JSON.stringify(demoUser));
-          // Give UserContext time to pick up the change
-          await new Promise(resolve => setTimeout(resolve, 100));
+          // Small delay to ensure UserContext picks up the change
+          await new Promise(resolve => setTimeout(resolve, 50));
           router.push(getRedirectPath(demoUser.role));
           return;
         }
@@ -53,8 +38,8 @@ export default function LoginPage() {
 
       if (loginType === "email" && form.credential.toLowerCase() === mockUser.email?.toLowerCase()) {
         localStorage.setItem("currentUser", JSON.stringify(mockUser));
-        // Give UserContext time to pick up the change
-        await new Promise(resolve => setTimeout(resolve, 100));
+        // Small delay to ensure UserContext picks up the change
+        await new Promise(resolve => setTimeout(resolve, 50));
         router.push(getRedirectPath(mockUser.role));
         return;
       }
@@ -94,8 +79,8 @@ export default function LoginPage() {
           .select("role")
           .eq("id", data.user.id)
           .single();
-        // Give UserContext time to pick up the Supabase session
-        await new Promise(resolve => setTimeout(resolve, 100));
+        // Small delay to ensure UserContext picks up the Supabase session
+        await new Promise(resolve => setTimeout(resolve, 50));
         router.push(getRedirectPath(profile?.role));
       }
     } catch (err: any) {
