@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mkutano User Journey Slides</title>
+  <style>
+    :root {
+      --forest-900: #1b2a14;
+      --forest-800: #2d3f22;
+      --forest-700: #3b5530;
+      --forest-600: #4a6b3f;
+      --forest-500: #5f7f52;
+      --forest-200: #d8e3d3;
+      --sand-50: #f6f2ea;
+      --sand-100: #efe7da;
+      --ink: #232323;
+      --muted: #556156;
+      --accent: #8b7355;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--ink);
+      background: var(--sand-50);
+    }
+
+    .deck {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .slide {
+      background: white;
+      border: 1px solid #e6e1d8;
+      border-radius: 16px;
+      padding: 36px 48px;
+      margin: 0 0 24px;
+      min-height: 640px;
+      position: relative;
+      box-shadow: 0 8px 30px rgba(27, 42, 20, 0.08);
+      page-break-after: always;
+    }
+
+    .slide:last-child {
+      page-break-after: auto;
+    }
+
+    .slide-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .slide-title {
+      font-size: 34px;
+      font-weight: 700;
+      color: var(--forest-900);
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .slide-subtitle {
+      font-size: 18px;
+      color: var(--muted);
+      margin: 8px 0 0;
+    }
+
+    .pill {
+      background: var(--forest-200);
+      color: var(--forest-800);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .grid.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .card {
+      background: var(--sand-50);
+      border: 1px solid #eee6d8;
+      border-radius: 14px;
+      padding: 18px 20px;
+      min-height: 120px;
+    }
+
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 18px;
+      color: var(--forest-800);
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .big-number {
+      font-size: 44px;
+      font-weight: 700;
+      color: var(--forest-700);
+      margin-bottom: 4px;
+    }
+
+    .list {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .list li {
+      margin-bottom: 8px;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .step {
+      background: #fdfaf5;
+      border: 1px solid #efe6d7;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .step strong {
+      color: var(--forest-800);
+      display: block;
+      margin-bottom: 6px;
+      font-size: 15px;
+    }
+
+    .quote {
+      background: #f7f3ea;
+      border-left: 4px solid var(--accent);
+      padding: 16px 20px;
+      font-size: 17px;
+      color: var(--muted);
+      border-radius: 10px;
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 18px;
+      left: 48px;
+      right: 48px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #8d8d8d;
+    }
+
+    .icon-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .icon-pill {
+      padding: 6px 12px;
+      background: #edf3ec;
+      border-radius: 999px;
+      font-size: 13px;
+      color: var(--forest-700);
+      border: 1px solid #dbe6d7;
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+      .deck {
+        padding: 0;
+      }
+      .slide {
+        border: none;
+        box-shadow: none;
+        border-radius: 0;
+        margin: 0;
+        min-height: 740px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="deck">
+    <!-- Slide 1 -->
+    <section class="slide">
+      <div class="slide-header">
+        <div>
+          <h1 class="slide-title">Mkutano: User Journey and Impact</h1>
+          <p class="slide-subtitle">An offline-first platform for village savings groups and enterprise partners</p>
+        </div>
+        <span class="pill">Overview</span>
+      </div>
+      <div class="grid two">
+        <div class="card">
+          <div class="big-number">33</div>
+          <h3>Live product routes</h3>
+          <p>Public marketing, community dashboards, and enterprise portals.</p>
+        </div>
+        <div class="card">
+          <div class="big-number">5</div>
+          <h3>User roles supported</h3>
+          <p>Secretary, Member, NGO, MFI, Admin with role-based views.</p>
+        </div>
+      </div>
+      <div class="quote" style="margin-top: 28px;">
+        "Mkutano helps groups run meetings, record savings, and report impact even when internet is unreliable."
+      </div>
+      <div class="footer">
+        <span>Mkutano</span>
+        <span>Slide 1</span>
+      </div>
+    </section>
+
+    <!-- Slide 2 -->
+    <section class="slide">
+      <div class="slide-header">
+        <div>
+          <h2 class="slide-title">The Human Problem</h2>
+          <p class="slide-subtitle">Why savings groups struggle to stay consistent and transparent</p>
+        </div>
+        <span class="pill">Context</span>
+      </div>
+      <ul class="list">
+        <li>Secretaries rely on paper notebooks and memory for meetings.</li>
+        <li>Calculations take too long and create disputes.</li>
+        <li>Members cannot easily see their savings or loan status.</li>
+        <li>NGOs and MFIs lack reliable impact reporting.</li>
+        <li>Connectivity is unreliable, so cloud-only tools fail.</li>
+      </ul>
+      <div class="icon-row">
+        <span class="icon-pill">Manual calculations</span>
+        <span class="icon-pill">Data loss risk</span>
+        <span class="icon-pill">Low transparency</span>
+        <span class="icon-pill">Disconnected partners</span>
+      </div>
+      <div class="footer">
+        <span>Mkutano</span>
+        <span>Slide 2</span>
+      </div>
+    </section>
+
+    <!-- Slide 3 -->
+    <section class="slide">
+      <div class="slide-header">
+        <div>
+          <h2 class="slide-title">Our Solution</h2>
+          <p class="slide-subtitle">Offline-first savings management with enterprise oversight</p>
+        </div>
+        <span class="pill">Solution</span>
+      </div>
+      <div class="grid three">
+        <div class="card">
+          <h3>Community Dashboards</h3>
+          <p>Run meetings, record contributions and loans, and issue reports in minutes.</p>
+        </div>
+        <div class="card">
+          <h3>Offline Sync</h3>
+          <p>Works without internet, then syncs automatically when back online.</p>
+        </div>
+        <div class="card">
+          <h3>Enterprise Edition</h3>
+          <p>NGO and MFI portals track funding, repayment, and impact across groups.</p>
+        </div>
+      </div>
+      <div class="quote" style="margin-top: 24px;">
+        "Mkutano reduces meeting time, improves accountability, and gives partners real-time impact visibility."
+      </div>
+      <div class="footer">
+        <span>Mkutano</span>
+        <span>Slide 3</span>
+      </div>
+    </section>
+
+    <!-- Slide 4 -->
+    <section class="slide">
+      <div class="slide-header">
+        <div>
+          <h2 class="slide-title">User Journey: Secretary</h2>
+          <p class="slide-subtitle">From preparation to reporting in a single workflow</p>
+        </div>
+        <span class="pill">Journey</span>
+      </div>
+      <div class="timeline">
+        <div class="step">
+          <strong>1. Open Meeting</strong>
+          Select date, venue, and facilitator.
+        </div>
+        <div class="step">
+          <strong>2. Attendance</strong>
+          Mark attendance with one tap per member.
+        </div>
+        <div class="step">
+          <strong>3. Contributions</strong>
+          Record savings, social fund, and fines quickly.
+        </div>
+        <div class="step">
+          <strong>4. Loans & Repayments</strong>
+          Issue loans, record repayments, close meeting.
+        </div>
+      </div>
+      <div class="grid two" style="margin-top: 24px;">
+        <div class="card">
+          <h3>Before</h3>
+          <p>Long meetings, manual totals, delayed reporting.</p>
+        </div>
+        <div class="card">
+          <h3>With Mkutano</h3>
+          <p>Faster sessions, instant totals, same-day PDF reports.</p>
+        </div>
+      </div>
+      <div class="footer">
+        <span>Mkutano</span>
+        <span>Slide 4</span>
+      </div>
+    </section>
+
+    <!-- Slide 5 -->
+    <section class="slide">
+      <div class="slide-header">
+        <div>
+          <h2 class="slide-title">User Journey: Member</h2>
+          <p class="slide-subtitle">Transparency and trust for every participant</p>
+        </div>
+        <span class="pill">Journey</span>
+      </div>
+      <div class="grid two">
+        <div class="card">
+          <h3>Member Experience</h3>
+          <ul class="list">
+            <li>See personal savings balance.</li>
+            <li>Track contribution history.</li>
+            <li>Monitor loans and repayment schedules.</li>
+            <li>Get clarity on outstanding balance.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>What Changes</h3>
+          <ul class="list">
+            <li>Less confusion about records.</li>
+            <li>Fewer disputes in meetings.</li>
+            <li>Higher confidence in group leadership.</li>
+            <li>Clear path to repay on time.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer">
+        <span>Mkutano</span>
+        <span>Slide 5</span>
+      </div>
+    </section>
+
+    <!-- Slide 6 -->
+    <section class="slide">
+      <div class="slide-header">
+        <div>
+          <h2 class="slide-title">User Journey: NGO + MFI Partner</h2>
+          <p class="slide-subtitle">From funding decisions to portfolio visibility</p>
+        </div>
+        <span class="pill">Journey</span>
+      </div>
+      <div class="grid two">
+        <div class="card">
+          <h3>NGO View</h3>
+          <p>Track budgets, allocations, funded groups, and impact trends in one dashboard.</p>
+        </div>
+        <div class="card">
+          <h3>MFI View</h3>
+          <p>Monitor disbursements, repayment performance, and group risk signals.</p>
+        </div>
+      </div>
+      <div class="timeline" style="margin-top: 20px;">
+        <div class="step">
+          <strong>Allocate Funding</strong>
+          Split budgets across MFI partners.
+        </div>
+        <div class="step">
+          <strong>Disburse to Groups</strong>
+          MFIs fund groups with transparent terms.
+        </div>
+        <div class="step">
+          <strong>Track Repayment</strong>
+          See repayment health and portfolio risks.
+        </div>
+        <div class="step">
+          <strong>Report Impact</strong>
+          Export insights for donors and boards.
+        </div>
+      </div>
+      <div class="footer">
+        <span>Mkutano</span>
+        <span>Slide 6</span>
+      </div>
+    </section>
+
+    <!-- Slide 7 -->
+    <section class="slide">
+      <div class="slide-header">
+        <div>
+          <h2 class="slide-title">Offline-First Advantage</h2>
+          <p class="slide-subtitle">Built for areas with unreliable connectivity</p>
+        </div>
+        <span class="pill">Reliability</span>
+      </div>
+      <div class="grid three">
+        <div class="card">
+          <h3>Works Offline</h3>
+          <p>All meeting actions run without internet and sync later.</p>
+        </div>
+        <div class="card">
+          <h3>Data Safety</h3>
+          <p>Local storage prevents loss and preserves progress.</p>
+        </div>
+        <div class="card">
+          <h3>Sync Status</h3>
+          <p>Visual indicators show what is pending or synced.</p>
+        </div>
+      </div>
+      <div class="quote" style="margin-top: 24px;">
+        "Offline-first means groups can keep working every week without tech interruptions."
+      </div>
+      <div class="footer">
+        <span>Mkutano</span>
+        <span>Slide 7</span>
+      </div>
+    </section>
+
+    <!-- Slide 8 -->
+    <section class="slide">
+      <div class="slide-header">
+        <div>
+          <h2 class="slide-title">Savings and Outcomes</h2>
+          <p class="slide-subtitle">Where the value shows up for users and partners</p>
+        </div>
+        <span class="pill">Impact</span>
+      </div>
+      <div class="grid three">
+        <div class="card">
+          <div class="big-number">Time</div>
+          <h3>Time Savings</h3>
+          <p>Shorter meetings and faster reporting for secretaries.</p>
+        </div>
+        <div class="card">
+          <div class="big-number">Cost</div>
+          <h3>Operational Savings</h3>
+          <p>Less paper, fewer errors, and reduced rework.</p>
+        </div>
+        <div class="card">
+          <div class="big-number">Risk</div>
+          <h3>Risk Visibility</h3>
+          <p>Early alerts on repayment health across portfolios.</p>
+        </div>
+      </div>
+      <div class="grid two" style="margin-top: 24px;">
+        <div class="card">
+          <h3>Community Outcomes</h3>
+          <ul class="list">
+            <li>Reduced disputes and errors.</li>
+            <li>Better planning for members.</li>
+            <li>Higher trust in leadership.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Partner Outcomes</h3>
+          <ul class="list">
+            <li>Clear impact reporting.</li>
+            <li>Portfolio risk visibility.</li>
+            <li>Evidence for donors and boards.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer">
+        <span>Mkutano</span>
+        <span>Slide 8</span>
+      </div>
+    </section>
+
+    <!-- Slide 9 -->
+    <section class="slide">
+      <div class="slide-header">
+        <div>
+          <h2 class="slide-title">Why We Win</h2>
+          <p class="slide-subtitle">Operational readiness and product differentiation</p>
+        </div>
+        <span class="pill">Readiness</span>
+      </div>
+      <div class="grid three">
+        <div class="card">
+          <h3>Production Ready</h3>
+          <p>Next.js 14, TypeScript, and Supabase with RLS policies.</p>
+        </div>
+        <div class="card">
+          <h3>PWA Enabled</h3>
+          <p>Installable on mobile and desktop with offline support.</p>
+        </div>
+        <div class="card">
+          <h3>Auto Deploy</h3>
+          <p>NGO and MFI portals connect funding to impact.</p>
+        </div>
+      </div>
+      <div class="icon-row" style="margin-top: 18px;">
+        <span class="icon-pill">Supabase Auth</span>
+        <span class="icon-pill">Row-Level Security</span>
+        <span class="icon-pill">Audit Trail</span>
+        <span class="icon-pill">PDF Reports</span>
+      </div>
+      <div class="footer">
+        <span>Mkutano</span>
+        <span>Slide 9</span>
+      </div>
+    </section>
+
+    <!-- Slide 10 -->
+    <section class="slide">
+      <div class="slide-header">
+        <div>
+          <h2 class="slide-title">Call to Action</h2>
+          <p class="slide-subtitle">How to present and demo the journey</p>
+        </div>
+        <span class="pill">Next Steps</span>
+      </div>
+      <div class="grid two">
+        <div class="card">
+          <h3>Demo Flow</h3>
+          <ul class="list">
+            <li>Open /login and use demo secretary.</li>
+            <li>Walk through meeting creation.</li>
+            <li>Show member view for transparency.</li>
+            <li>Open /enterprise for NGO and MFI dashboards.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Discussion Prompts</h3>
+          <ul class="list">
+            <li>How much time is spent per meeting today?</li>
+            <li>What reports do donors need monthly?</li>
+            <li>Which repayment signals matter most?</li>
+            <li>What would reliable offline data change?</li>
+          </ul>
+        </div>
+      </div>
+      <div class="quote" style="margin-top: 24px;">
+        "Mkutano makes savings groups reliable, visible, and scalable."
+      </div>
+      <div class="footer">
+        <span>Mkutano</span>
+        <span>Slide 10</span>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
