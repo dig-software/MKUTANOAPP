@@ -20,6 +20,7 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
     setLoading(true);
+    sessionStorage.removeItem("explicitLogout");
 
     const getRedirectPath = (role?: string) =>
       role === "member" ? "/dashboard/wallet" : "/dashboard";

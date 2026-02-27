@@ -15,6 +15,17 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    const consumeExplicitLogoutFlag = () => {
+      if (typeof window === 'undefined') {
+        return false;
+      }
+      const flag = sessionStorage.getItem('explicitLogout');
+      if (flag) {
+        sessionStorage.removeItem('explicitLogout');
+      }
+      return flag === 'true';
+    };
+
     // Check current session
     const initializeAuth = async () => {
       try {
@@ -104,11 +115,15 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
             localStorage.setItem('currentUser', JSON.stringify(profile));
           }
         } else if (event === 'SIGNED_OUT') {
-          // Explicit sign out - clear everything
-          console.log('User signed out, clearing session');
-          localStorage.removeItem('currentUser');
-          sessionStorage.clear();
-          setCurrentUser(null);
+          // Only clear local user when logout was explicit
+          if (consumeExplicitLogoutFlag()) {
+            console.log('User signed out, clearing session');
+            localStorage.removeItem('currentUser');
+            sessionStorage.clear();
+            setCurrentUser(null);
+          } else {
+            console.log('SIGNED_OUT without explicit logout, preserving local user');
+          }
         } else if (!session && event !== 'TOKEN_REFRESHED') {
           // No session - try to use localStorage (for demo/mock login)
           if (typeof window !== 'undefined') {

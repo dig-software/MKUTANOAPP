@@ -53,12 +53,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [profileOpen, setProfileOpen] = useState(false);
   const { currentUser, isLoading } = useCurrentUser();
   const [localUser, setLocalUser] = useState(currentUser);
+  const [localChecked, setLocalChecked] = useState(false);
 
   // Also check localStorage as fallback for race conditions
   useEffect(() => {
     if (!isLoading) {
       if (currentUser) {
         setLocalUser(currentUser);
+        setLocalChecked(true);
       } else {
         // Check localStorage if useCurrentUser hasn't loaded yet
         const stored = localStorage.getItem('currentUser');
@@ -73,17 +75,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         } else {
           setLocalUser(null);
         }
+        setLocalChecked(true);
       }
     }
   }, [currentUser, isLoading]);
 
   useEffect(() => {
-    if (!isLoading && !currentUser && !localUser) {
+    if (!isLoading && localChecked && !currentUser && !localUser) {
       router.push("/login");
     }
-  }, [currentUser, isLoading, localUser, router]);
+  }, [currentUser, isLoading, localChecked, localUser, router]);
 
-  if (isLoading || (!currentUser && !localUser)) {
+  if (isLoading || !localChecked || (!currentUser && !localUser)) {
     return null; // Will redirect via useEffect
   }
 
@@ -96,12 +99,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   const handleLogout = async () => {
     try {
+      sessionStorage.setItem("explicitLogout", "true");
       // Clear all session data
       localStorage.removeItem("currentUser");
-      sessionStorage.clear();
       
       // Sign out from Supabase
       await supabase.auth.signOut({ scope: "local" });
+
       
       // Redirect to login
       router.push("/login");
