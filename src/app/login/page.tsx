@@ -30,6 +30,7 @@ export default function LoginPage() {
         const demoUser = getUserByPhone(form.credential);
         if (demoUser) {
           localStorage.setItem("currentUser", JSON.stringify(demoUser));
+          window.dispatchEvent(new Event("mkutano:login"));
           // Small delay to ensure UserContext picks up the change
           await new Promise(resolve => setTimeout(resolve, 50));
           router.push(getRedirectPath(demoUser.role));
@@ -39,6 +40,7 @@ export default function LoginPage() {
 
       if (loginType === "email" && form.credential.toLowerCase() === mockUser.email?.toLowerCase()) {
         localStorage.setItem("currentUser", JSON.stringify(mockUser));
+        window.dispatchEvent(new Event("mkutano:login"));
         // Small delay to ensure UserContext picks up the change
         await new Promise(resolve => setTimeout(resolve, 50));
         router.push(getRedirectPath(mockUser.role));

@@ -93,8 +93,22 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       }
     };
 
+    const handleLocalLogin = () => {
+      const storedUser = localStorage.getItem('currentUser');
+      if (storedUser) {
+        try {
+          setCurrentUser(JSON.parse(storedUser) as User);
+        } catch (error) {
+          console.error('Failed to parse stored user on local login', error);
+          localStorage.removeItem('currentUser');
+          setCurrentUser(null);
+        }
+      }
+    };
+
     if (typeof window !== 'undefined') {
       window.addEventListener('storage', handleStorageChange);
+      window.addEventListener('mkutano:login', handleLocalLogin as EventListener);
     }
 
     // Listen for auth changes
@@ -146,6 +160,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       subscription?.unsubscribe();
       if (typeof window !== 'undefined') {
         window.removeEventListener('storage', handleStorageChange);
+        window.removeEventListener('mkutano:login', handleLocalLogin as EventListener);
       }
     };
   }, []);
