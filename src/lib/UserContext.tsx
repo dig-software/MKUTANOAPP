@@ -29,6 +29,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
           if (profile && !error) {
             setCurrentUser(profile as User);
+            localStorage.setItem('currentUser', JSON.stringify(profile));
           }
         } else if (typeof window !== 'undefined') {
           const storedUser = localStorage.getItem('currentUser');
@@ -38,11 +39,15 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
             } catch (parseError) {
               console.error('Failed to parse stored user', parseError);
               localStorage.removeItem('currentUser');
+              setCurrentUser(null);
             }
+          } else {
+            setCurrentUser(null);
           }
         }
       } catch (error) {
         console.error('Auth initialization error:', error);
+        setCurrentUser(null);
       }
       setIsLoading(false);
     };
@@ -52,6 +57,8 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log('Auth state changed:', event);
+        
         if (session?.user) {
           // Supabase session exists - use it
           const { data: profile } = await supabase
@@ -66,11 +73,15 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
           }
         } else if (event === 'SIGNED_OUT') {
           // Explicit sign out - clear everything
+          console.log('User signed out, clearing session');
+          localStorage.removeItem('currentUser');
+          sessionStorage.clear();
+          setCurrentUser(null);
+        } else if (!session) {
+          // No session and not explicitly signed out - clear user
           localStorage.removeItem('currentUser');
           setCurrentUser(null);
         }
-        // For other cases (no session but not explicitly signed out), 
-        // preserve any stored user (demo login) and don't clear it
       }
     );
 

@@ -69,9 +69,21 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const navItems = navSections[currentUser.role as keyof typeof navSections] || navSections.secretary;
 
   const handleLogout = async () => {
-    localStorage.removeItem("currentUser");
-    await supabase.auth.signOut();
-    router.push("/login");
+    try {
+      // Clear all session data
+      localStorage.removeItem("currentUser");
+      sessionStorage.clear();
+      
+      // Sign out from Supabase
+      await supabase.auth.signOut({ scope: "local" });
+      
+      // Redirect to login
+      router.push("/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+      // Still redirect even if there's an error
+      router.push("/login");
+    }
   };
 
   return (

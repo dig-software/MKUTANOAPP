@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Leaf, Eye, EyeOff, Lock, Phone } from "lucide-react";
@@ -15,6 +15,22 @@ export default function LoginPage() {
   const [loginType, setLoginType] = useState<"phone" | "email">("phone");
   const [form, setForm] = useState({ credential: "", password: "" });
   const [error, setError] = useState("");
+
+  // Clear any previous session data when login page loads
+  useEffect(() => {
+    const clearPreviousSession = async () => {
+      // Clear localStorage
+      localStorage.removeItem("currentUser");
+      
+      // Clear Supabase session
+      await supabase.auth.signOut({ scope: "local" });
+      
+      // Clear sessionStorage as well
+      sessionStorage.clear();
+    };
+    
+    clearPreviousSession();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -239,7 +239,7 @@ This project is licensed under the MIT License.
 ## 📧 Contact
 
 - **Email**: hello@mkutano.app
-- **Phone**: +254 712 345 678
-- **Office**: iHub Nairobi, Kenya
+- **Phone**: +254 788191822
+- **Office**: REMOTE BASED
 
 Built with ❤️ for women's savings groups across Africa.
