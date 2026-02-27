@@ -52,21 +52,47 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [notifOpen, setNotifOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const { currentUser, isLoading } = useCurrentUser();
+  const [localUser, setLocalUser] = useState(currentUser);
+
+  // Also check localStorage as fallback for race conditions
+  useEffect(() => {
+    if (!isLoading) {
+      if (currentUser) {
+        setLocalUser(currentUser);
+      } else {
+        // Check localStorage if useCurrentUser hasn't loaded yet
+        const stored = localStorage.getItem('currentUser');
+        if (stored) {
+          try {
+            const user = JSON.parse(stored);
+            setLocalUser(user);
+          } catch (e) {
+            console.error('Failed to parse stored user:', e);
+            setLocalUser(null);
+          }
+        } else {
+          setLocalUser(null);
+        }
+      }
+    }
+  }, [currentUser, isLoading]);
 
   useEffect(() => {
-    if (!isLoading && !currentUser) {
+    if (!isLoading && !currentUser && !localUser) {
       router.push("/login");
     }
-  }, [currentUser, isLoading, router]);
+  }, [currentUser, isLoading, localUser, router]);
 
-  if (isLoading || !currentUser) {
+  if (isLoading || (!currentUser && !localUser)) {
     return null; // Will redirect via useEffect
   }
+
+  const displayUser = currentUser || localUser;
 
   const syncStatus: "synced" | "pending" | "offline" = "synced";
   const unreadCount = mockNotifications.filter(n => !n.isRead).length;
 
-  const navItems = navSections[currentUser.role as keyof typeof navSections] || navSections.secretary;
+  const navItems = navSections[displayUser!.role as keyof typeof navSections] || navSections.secretary;
 
   const handleLogout = async () => {
     try {
@@ -155,9 +181,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </button>
             <div>
               <h1 className="text-sm font-semibold text-gray-900 capitalize">
-                {currentUser.role === "secretary" ? "Group Secretary" : currentUser.role === "ngo" ? "NGO Partner" : currentUser.role}
+                {displayUser!.role === "secretary" ? "Group Secretary" : displayUser!.role === "ngo" ? "NGO Partner" : displayUser!.role}
               </h1>
-              <p className="text-xs text-gray-500">{currentUser.name}</p>
+              <p className="text-xs text-gray-500">{displayUser!.name}</p>
             </div>
           </div>
 
@@ -193,15 +219,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <div className="relative">
               <button className="flex items-center gap-2 p-1.5 pr-3 hover:bg-gray-100 rounded-lg" onClick={() => setProfileOpen(!profileOpen)}>
                 <div className="w-8 h-8 bg-forest-200 rounded-full flex items-center justify-center text-xs font-bold text-forest-800">
-                  {getInitials(currentUser.name)}
+                  {getInitials(displayUser!.name)}
                 </div>
                 <ChevronDown className="w-4 h-4 text-gray-500" />
               </button>
               {profileOpen && (
                 <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-sand-200">
                   <div className="p-3 border-b border-sand-100">
-                    <p className="text-sm font-semibold text-gray-900">{currentUser.name}</p>
-                    <p className="text-xs text-gray-500">{currentUser.phone}</p>
+                    <p className="text-sm font-semibold text-gray-900">{displayUser!.name}</p>
+                    <p className="text-xs text-gray-500">{displayUser!.phone}</p>
                   </div>
                   <Link href="/dashboard/settings" className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-sand-50">
                     <Settings className="w-4 h-4" />

@@ -16,24 +16,19 @@ export default function LoginPage() {
   const [form, setForm] = useState({ credential: "", password: "" });
   const [error, setError] = useState("");
 
-  // Clear any previous session data when login page loads
+  // Clear Supabase session when login page loads (not localStorage - that might be from a previous login)
   useEffect(() => {
-    const clearPreviousSession = async () => {
-      // Only clear if we came from dashboard/logout, not on initial page load
-      const referrer = document.referrer;
-      if (referrer.includes('/dashboard') || referrer.includes('/login')) {
-        // Clear localStorage
-        localStorage.removeItem("currentUser");
-        
-        // Clear Supabase session
+    const clearSupabaseSession = async () => {
+      try {
+        // Clear Supabase session to start fresh, but don't touch localStorage
+        // localStorage will be properly set during login
         await supabase.auth.signOut({ scope: "local" });
-        
-        // Clear sessionStorage as well
-        sessionStorage.clear();
+      } catch (error) {
+        console.error('Error clearing Supabase session:', error);
       }
     };
     
-    clearPreviousSession();
+    clearSupabaseSession();
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {

@@ -62,6 +62,30 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
     initializeAuth();
 
+    // Listen to localStorage changes (for cross-tab sync and login detection)
+    const handleStorageChange = (e: StorageEvent) => {
+      console.log('Storage changed:', e.key);
+      if (e.key === 'currentUser') {
+        if (e.newValue) {
+          try {
+            const user = JSON.parse(e.newValue) as User;
+            console.log('User updated from storage:', user);
+            setCurrentUser(user);
+          } catch (error) {
+            console.error('Failed to parse user from storage event', error);
+            setCurrentUser(null);
+          }
+        } else {
+          console.log('User cleared from storage');
+          setCurrentUser(null);
+        }
+      }
+    };
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('storage', handleStorageChange);
+    }
+
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
@@ -105,6 +129,9 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
     return () => {
       subscription?.unsubscribe();
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('storage', handleStorageChange);
+      }
     };
   }, []);
 
